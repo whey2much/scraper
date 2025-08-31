@@ -10,11 +10,9 @@ from typing import Optional, List, Dict, Tuple
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 
 # ------------------------------- #
 # Config & Paths
@@ -54,41 +52,27 @@ def slugify(s: str) -> str:
     return s[:100]
 
 def normalize_price_text(txt: str) -> str:
-    """
-    Normalize various unicode spaces and remove currency symbols/letters,
-    leaving digits and separators.
-    """
     if not txt:
         return ""
     txt = txt.replace("\u00A0", " ").replace("\u202F", " ").replace("\u2009", " ")
-    # Remove currency symbols and letters
-    txt = re.sub(r"[^\d,.\s]", "", txt)
-    # Collapse spaces
+    txt = re.sub(r"[^\d,.\s]", "", txt)  # strip currency symbols & letters
     txt = re.sub(r"\s+", "", txt)
     return txt
 
 def parse_price(txt: str) -> Optional[float]:
-    """
-    Handle: 4,499.00 | 4.499,00 | 4499 | 4 499,00 (after normalization).
-    """
     if not txt:
         return None
     t = normalize_price_text(txt)
     if not t:
         return None
 
-    # If both separators exist -> assume last sep is decimal
     if "," in t and "." in t:
         last_sep = max(t.rfind(","), t.rfind("."))
         integer = re.sub(r"[.,]", "", t[:last_sep])
         decimal = t[last_sep + 1:]
-        if decimal.isdigit():
-            t = f"{integer}.{decimal}"
-        else:
-            t = integer
+        t = f"{integer}.{decimal}" if decimal.isdigit() else integer
     else:
         if "," in t:
-            # if looks like decimal at end, convert; else remove commas
             if re.search(r",\d{2}$", t):
                 t = t.replace(".", "").replace(",", ".")
             else:
@@ -102,7 +86,6 @@ def parse_price(txt: str) -> Optional[float]:
 # ---- JSON-LD / meta / page-source fallbacks ---- #
 
 def find_price_in_obj(obj):
-    """Recursively search nested JSON for a 'price' (preferring Offer nodes)."""
     if isinstance(obj, dict):
         if (obj.get("@type") == "Offer" or "offers" in obj) and "price" in obj:
             p = parse_price(str(obj.get("price", "")))
@@ -142,7 +125,7 @@ def get_price_from_jsonld(driver) -> Tuple[Optional[float], Optional[str]]:
                     continue
             got = find_price_in_obj(data)
             if got:
-                return got  # (price_value, raw_str)
+                return got
     except Exception:
         pass
     return None, None
@@ -176,27 +159,18 @@ def get_price_from_pagesource(driver) -> Tuple[Optional[float], Optional[str]]:
             return p, f"₹{num}"
     return None, None
 
-# ---- Variant selection (e.g., 2kg / Rich Chocolate) ---- #
+# ---- Variant selection ---- #
 
 def click_variant_if_found(driver, *needles: str) -> None:
-    """
-    Clicks a button/option/link whose visible text contains any of the 'needles' (case-insensitive).
-    Safe no-op if nothing found.
-    """
     needles = [n for n in needles if n]
     if not needles:
         return
     lower_needles = [n.lower() for n in needles]
-
-    # broad XPath: clickable-ish elements containing needle text
     xpath = "//*[@role='button' or self::button or self::a or self::span or self::div]"
     try:
-        elems = WebDriverWait(driver, 5).until(
-            EC.presence_of_all_elements_located((By.XPATH, xpath))
-        )
+        elems = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.XPATH, xpath)))
     except Exception:
         elems = []
-
     tried = 0
     for el in elems:
         if tried >= 5:
@@ -212,20 +186,13 @@ def click_variant_if_found(driver, *needles: str) -> None:
             continue
 
 def extract_variant_needles(product_name: str) -> List[str]:
-    """
-    From 'MuscleBlaze Biozyme Performance Whey | 2kg | Rich Chocolate ',
-    return likely variant keywords to click.
-    """
     needles: List[str] = []
-    # weights
     if re.search(r"\b2\s*kg\b", product_name, re.I):
         needles += ["2 kg", "2kg", "4.4 lb", "4.4lb"]
     if re.search(r"\b1\s*kg\b", product_name, re.I):
         needles += ["1 kg", "1kg", "2.2 lb", "2.2lb"]
     if re.search(r"\b5\s*lb\b", product_name, re.I):
         needles += ["5 lb", "5lb", "2.27 kg", "2.27kg"]
-
-    # flavor (use last pipe token heuristic)
     parts = [p.strip() for p in product_name.split("|")]
     for token in reversed(parts):
         if any(k in token.lower() for k in ["choc", "van", "cookie", "straw", "hazel", "mango", "coffee"]):
@@ -237,10 +204,7 @@ def extract_variant_needles(product_name: str) -> List[str]:
 # Scraper Core
 # ------------------------------- #
 
-LOCATOR_MAP = {
-    "xpath": By.XPATH,
-    "css": By.CSS_SELECTOR,
-}
+LOCATOR_MAP = {"xpath": By.XPATH, "css": By.CSS_SELECTOR}
 
 @dataclass
 class SiteLocator:
@@ -260,7 +224,6 @@ class WebsiteScraper:
 
     def get_price(self, driver, timeout=WAIT_TIMEOUT) -> Tuple[Optional[float], Optional[str]]:
         wait = WebDriverWait(driver, timeout)
-        # 1) Try visible DOM locators (with fallbacks)
         for loc in self.site.locators:
             by = LOCATOR_MAP.get((loc.get("locator_type") or "").lower())
             val = loc.get("locator_value") or ""
@@ -279,21 +242,15 @@ class WebsiteScraper:
             except Exception:
                 continue
 
-        # 2) JSON-LD fallback
         p, raw = get_price_from_jsonld(driver)
         if p is not None:
             return p, raw
-
-        # 3) Microdata/OG meta fallback
         p, raw = get_price_from_meta(driver)
         if p is not None:
             return p, raw
-
-        # 4) Page-source scan (last resort)
         p, raw = get_price_from_pagesource(driver)
         if p is not None:
             return p, raw
-
         return None, None
 
 # ------------------------------- #
@@ -315,30 +272,19 @@ def build_driver() -> webdriver.Chrome:
         "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
     )
-    # Faster page start & block images for speed
     options.page_load_strategy = "eager"
     options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
 
-    # Use Chrome path provided by the CI runner if present
     chrome_bin = os.environ.get("CHROME_BIN")
     if chrome_bin:
         options.binary_location = chrome_bin
 
-    # Prefer system ChromeDriver if provided by CI, else fallback to webdriver_manager
-    chromedriver_path = os.environ.get("CHROMEDRIVER")
-    if chromedriver_path:
-        service = Service(chromedriver_path)
-    else:
-        service = Service(ChromeDriverManager().install())
-
-    driver = webdriver.Chrome(service=service, options=options)
+    # Selenium Manager auto-installs a matching driver:
+    driver = webdriver.Chrome(options=options)
     driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
     return driver
 
 def ensure_locators_schema(site_cfg: dict) -> List[Dict]:
-    """
-    Support both legacy single-locator schema and new multi-locator schema.
-    """
     if isinstance(site_cfg.get("locators"), list):
         return site_cfg["locators"]
     if site_cfg.get("locator_type") and site_cfg.get("locator_value"):
@@ -350,8 +296,8 @@ def ensure_locators_schema(site_cfg: dict) -> List[Dict]:
 # ------------------------------- #
 
 def scrape_all():
-    products = load_json(PRODUCTS_PATH)   # { "Product Name": { "Flipkart": "url", ... }, ... }
-    locator_cfg = load_json(LOCATORS_PATH)  # { "Flipkart": { "locators":[...] }, ... }
+    products = load_json(PRODUCTS_PATH)
+    locator_cfg = load_json(LOCATORS_PATH)
 
     results: Dict[str, Dict] = {}
     driver = build_driver()
@@ -386,7 +332,7 @@ def scrape_all():
                 for attempt in range(1, MAX_RETRIES + 1):
                     try:
                         driver.get(product_url)
-                        # Variant selection for sites that need it
+
                         if website_name in ("Flipkart", "MuscleBlaze"):
                             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
                             needles = extract_variant_needles(product_name)
@@ -396,7 +342,7 @@ def scrape_all():
                             except Exception:
                                 pass
 
-                        # Fast path: JSON-LD / meta first, then DOM locators, then page-source scan
+                        # Fast path: JSON-LD / meta first, then DOM, then page-source
                         p, raw = get_price_from_jsonld(driver)
                         if p is None:
                             p, raw = get_price_from_meta(driver)
@@ -412,9 +358,8 @@ def scrape_all():
                         break
                     except Exception as e:
                         status = f"error:{type(e).__name__}"
-                        sleep(1.5 * attempt)  # backoff
+                        sleep(1.5 * attempt)
                 else:
-                    # After retries, dump diagnostics
                     try:
                         fn_base = f"{slugify(product_name)}__{slugify(website_name)}"
                         driver.save_screenshot(os.path.join(DEBUG_DIR, f"{fn_base}.png"))
@@ -439,11 +384,9 @@ def scrape_all():
     finally:
         driver.quit()
 
-    # Write structured JSON
     with open(OUTPUT_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    # Flatten to CSV (keep numeric price for downstream math)
     flat_rows = []
     for product, sites in results.items():
         for site, info in sites.items():
@@ -468,9 +411,8 @@ def scrape_all():
 # ------------------------------- #
 
 if __name__ == "__main__":
-    # Optional: quick single-URL test
     if len(sys.argv) == 3:
-        test_site = sys.argv[1]  # e.g., "Flipkart"
+        test_site = sys.argv[1]
         test_url = sys.argv[2]
         test_products = {"Ad-hoc Test": {test_site: test_url}}
         with open(PRODUCTS_PATH, "w", encoding="utf-8") as f:
