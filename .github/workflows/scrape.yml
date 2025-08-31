@@ -25,6 +25,16 @@ jobs:
         id: chrome
         uses: browser-actions/setup-chrome@v1
 
+      # Remove any preinstalled chromedriver so Selenium Manager can pick the right one
+      - name: Remove incompatible ChromeDriver from PATH
+        run: |
+          if command -v chromedriver; then
+            echo "Removing preinstalled chromedriver at $(command -v chromedriver)"
+            sudo rm -f "$(command -v chromedriver)"
+          else
+            echo "No chromedriver found on PATH; nothing to remove."
+          fi
+
       - name: Show versions
         run: |
           python --version
