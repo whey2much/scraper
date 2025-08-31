@@ -1,0 +1,57 @@
+name: Scrape (Selenium) and Save Artifacts
+
+on:
+  # 02:00 IST daily == 20:30 UTC daily
+  schedule:
+    - cron: "30 20 * * *"
+  # allow manual runs from the Actions tab
+  workflow_dispatch: {}
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Google Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Show versions
+        run: |
+          python --version
+          echo "Chrome path: ${{ steps.chrome.outputs.chrome-path }}"
+          google-chrome --version || true
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          # If you later add publishing, put Wix secrets here:
+          # WIX_CLIENT_ID: ${{ secrets.WIX_CLIENT_ID }}
+          # WIX_CLIENT_SECRET: ${{ secrets.WIX_CLIENT_SECRET }}
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          python scraper/scrape.py
+          echo "Run complete"
+
+      - name: Upload results (artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-output
+          path: |
+            data/scraped_data.json
+            data/scraped_data.csv
+            data/debug/
+          if-no-files-found: warn
