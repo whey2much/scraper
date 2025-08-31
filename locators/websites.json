@@ -1,0 +1,54 @@
+{
+  "Amazon": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "#corePriceDisplay_desktop_feature_div .a-offscreen" },
+      { "locator_type": "css", "locator_value": "#apex_desktop .a-offscreen" },
+      { "locator_type": "css", "locator_value": "span.a-price-whole" }
+    ]
+  },
+  "Flipkart": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "._30jeq3._16Jk6d" },
+      { "locator_type": "css", "locator_value": "div[class*='price'] span" },
+      { "locator_type": "css", "locator_value": "div[class*='prices'] span" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "Healthkart": {
+    "locators": [
+      { "locator_type": "css", "locator_value": ".price .value" },
+      { "locator_type": "css", "locator_value": ".final-price, .finalPrice" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "MuscleBlaze": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "[itemprop='price'], .product-price, .final-price, .current-price" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "OptimumNutrition": {
+    "locators": [
+      { "locator_type": "css", "locator_value": ".price .value, .price .amount, .sales .price, .product__price .price__current" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "MyProtein": {
+    "locators": [
+      { "locator_type": "css", "locator_value": ".product-price, .productPrice_value, .price" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "Nutrabay": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "[itemprop='price'], .sale-price, .offer-price, .product-offer-price, .price .value" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  },
+  "HealthXP": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "[itemprop='price'], .final-price, .selling-price, .product-price .price" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+    ]
+  }
+}
