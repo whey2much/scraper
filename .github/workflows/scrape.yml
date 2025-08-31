@@ -1,10 +1,9 @@
 name: Scrape (Selenium) and Save Artifacts
 
 on:
-  # 02:00 IST daily == 20:30 UTC daily
+  # 02:00 IST daily == 20:30 UTC
   schedule:
     - cron: "30 20 * * *"
-  # allow manual runs from the Actions tab
   workflow_dispatch: {}
 
 jobs:
@@ -21,15 +20,24 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
+      # Install Chromium/Chrome
       - name: Install Google Chrome
         id: chrome
         uses: browser-actions/setup-chrome@v1
+
+      # Install a matching ChromeDriver
+      - name: Install ChromeDriver
+        id: chromedriver
+        uses: browser-actions/setup-chromedriver@v1
+        with:
+          chrome-version: ${{ steps.chrome.outputs.chrome-version }}
 
       - name: Show versions
         run: |
           python --version
           echo "Chrome path: ${{ steps.chrome.outputs.chrome-path }}"
-          google-chrome --version || true
+          echo "Driver path: ${{ steps.chromedriver.outputs.chromedriver-path }}"
+          ${{ steps.chrome.outputs.chrome-path }} --version || true
 
       - name: Install Python dependencies
         run: |
@@ -38,10 +46,12 @@ jobs:
 
       - name: Run scraper
         env:
-          # If you later add publishing, put Wix secrets here:
+          # Expose paths to the Python script
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          CHROMEDRIVER: ${{ steps.chromedriver.outputs.chromedriver-path }}
+          # (Optional) add Wix secrets later when you publish to CMS
           # WIX_CLIENT_ID: ${{ secrets.WIX_CLIENT_ID }}
           # WIX_CLIENT_SECRET: ${{ secrets.WIX_CLIENT_SECRET }}
-          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           python scraper/scrape.py
           echo "Run complete"
