@@ -20,23 +20,15 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      # Install Chromium/Chrome
+      # Install Chrome/Chromium on the runner
       - name: Install Google Chrome
         id: chrome
         uses: browser-actions/setup-chrome@v1
-
-      # Install a matching ChromeDriver
-      - name: Install ChromeDriver
-        id: chromedriver
-        uses: browser-actions/setup-chromedriver@v1
-        with:
-          chrome-version: ${{ steps.chrome.outputs.chrome-version }}
 
       - name: Show versions
         run: |
           python --version
           echo "Chrome path: ${{ steps.chrome.outputs.chrome-path }}"
-          echo "Driver path: ${{ steps.chromedriver.outputs.chromedriver-path }}"
           ${{ steps.chrome.outputs.chrome-path }} --version || true
 
       - name: Install Python dependencies
@@ -46,12 +38,8 @@ jobs:
 
       - name: Run scraper
         env:
-          # Expose paths to the Python script
+          # Expose Chrome path for the script
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
-          CHROMEDRIVER: ${{ steps.chromedriver.outputs.chromedriver-path }}
-          # (Optional) add Wix secrets later when you publish to CMS
-          # WIX_CLIENT_ID: ${{ secrets.WIX_CLIENT_ID }}
-          # WIX_CLIENT_SECRET: ${{ secrets.WIX_CLIENT_SECRET }}
         run: |
           python scraper/scrape.py
           echo "Run complete"
