@@ -315,7 +315,23 @@ def build_driver() -> webdriver.Chrome:
         "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
     )
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # Faster page start & block images for speed
+    options.page_load_strategy = "eager"
+    options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+
+    # Use Chrome path provided by the CI runner if present
+    chrome_bin = os.environ.get("CHROME_BIN")
+    if chrome_bin:
+        options.binary_location = chrome_bin
+
+    # Prefer system ChromeDriver if provided by CI, else fallback to webdriver_manager
+    chromedriver_path = os.environ.get("CHROMEDRIVER")
+    if chromedriver_path:
+        service = Service(chromedriver_path)
+    else:
+        service = Service(ChromeDriverManager().install())
+
+    driver = webdriver.Chrome(service=service, options=options)
     driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
     return driver
 
@@ -370,23 +386,29 @@ def scrape_all():
                 for attempt in range(1, MAX_RETRIES + 1):
                     try:
                         driver.get(product_url)
-                        # For sites that often need exact variant selection before price appears
+                        # Variant selection for sites that need it
                         if website_name in ("Flipkart", "MuscleBlaze"):
-                            # ensure page shell loaded
                             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
                             needles = extract_variant_needles(product_name)
                             click_variant_if_found(driver, *needles)
-                            # optional: wait until rupee appears somewhere
                             try:
                                 WebDriverWait(driver, 8).until(lambda d: "₹" in (d.page_source or ""))
                             except Exception:
                                 pass
 
-                        price_value, raw_text = scraper.get_price(driver, timeout=WAIT_TIMEOUT)
-                        if price_value is None:
-                            status = "price_not_found"
-                        else:
-                            status = "ok"
+                        # Fast path: JSON-LD / meta first, then DOM locators, then page-source scan
+                        p, raw = get_price_from_jsonld(driver)
+                        if p is None:
+                            p, raw = get_price_from_meta(driver)
+                        if p is None:
+                            p2, raw2 = scraper.get_price(driver, timeout=WAIT_TIMEOUT)
+                            p, raw = (p2, raw2) if p2 is not None else (None, raw)
+                        if p is None:
+                            p3, raw3 = get_price_from_pagesource(driver)
+                            p, raw = (p3, raw3) if p3 is not None else (None, raw)
+
+                        price_value, raw_text = p, raw
+                        status = "ok" if price_value is not None else "price_not_found"
                         break
                     except Exception as e:
                         status = f"error:{type(e).__name__}"
