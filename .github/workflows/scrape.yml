@@ -26,7 +26,7 @@ jobs:
         id: chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: '141'   # change to 'stable' or a newer major later if you want
+          chrome-version: '141'   # change to 'stable' later if you wish
 
       # Remove any preinstalled chromedriver so Selenium Manager can pick the right one
       - name: Remove incompatible ChromeDriver from PATH
@@ -59,17 +59,26 @@ jobs:
 
       # ---- push JSON to your Wix endpoint ----
       - name: Push prices to Wix (Products)
-        if: ${{ success() && hashFiles('data/scraped_data.json') != '' && secrets.WIX_PRODUCTS_WEBHOOK_URL != '' && secrets.WIX_PRODUCTS_TOKEN != '' }}
+        if: ${{ success() && hashFiles('data/scraped_data.json') != '' }}
         env:
-          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}   # e.g. https://whey2much.in/_functions/updateproducts
-          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}       # same value as PRICES_WEBHOOK_TOKEN in Wix
+          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}   # https://whey2much.in/_functions/updateproducts
+          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}       # same as PRICES_WEBHOOK_TOKEN in Wix
         run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK_URL:-}" ] || [ -z "${WEBHOOK_TOKEN:-}" ]; then
+            echo "❌ Missing secrets. Set WIX_PRODUCTS_WEBHOOK_URL and WIX_PRODUCTS_TOKEN in repo Secrets." >&2
+            exit 1
+          fi
+          if [ ! -s data/scraped_data.json ]; then
+            echo "❌ data/scraped_data.json not found or empty." >&2
+            exit 1
+          fi
           echo "Posting scraped_data.json to Wix..."
           curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -H "x-api-key: $WEBHOOK_TOKEN" \
             --data-binary @data/scraped_data.json
-          echo "Done."
+          echo "✅ Posted to Wix."
 
       - name: Upload results (artifacts)
         if: always()
