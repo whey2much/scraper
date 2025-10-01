@@ -9,6 +9,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repo
@@ -21,9 +22,11 @@ jobs:
           cache: "pip"
 
       # Install Chrome/Chromium on the runner
-      - name: Install Google Chrome
+      - name: Install Google Chrome (pin major to avoid driver flaps)
         id: chrome
         uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: '141'   # change to 'stable' or a newer major later if you want
 
       # Remove any preinstalled chromedriver so Selenium Manager can pick the right one
       - name: Remove incompatible ChromeDriver from PATH
@@ -48,13 +51,28 @@ jobs:
 
       - name: Run scraper
         env:
-          # Expose Chrome path for the script
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          PYTHONUNBUFFERED: "1"
         run: |
-          python scraper/scrape.py
+          python -u scraper/scrape.py
           echo "Run complete"
 
+      # ---- push JSON to your Wix endpoint ----
+      - name: Push prices to Wix (Products)
+        if: ${{ success() && hashFiles('data/scraped_data.json') != '' && secrets.WIX_PRODUCTS_WEBHOOK_URL != '' && secrets.WIX_PRODUCTS_TOKEN != '' }}
+        env:
+          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}   # e.g. https://whey2much.in/_functions/updateproducts
+          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}       # same value as PRICES_WEBHOOK_TOKEN in Wix
+        run: |
+          echo "Posting scraped_data.json to Wix..."
+          curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: $WEBHOOK_TOKEN" \
+            --data-binary @data/scraped_data.json
+          echo "Done."
+
       - name: Upload results (artifacts)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: scrape-output
