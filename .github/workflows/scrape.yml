@@ -26,7 +26,7 @@ jobs:
         id: chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: '141'   # change to 'stable' later if you wish
+          chrome-version: "141"
 
       # Remove any preinstalled chromedriver so Selenium Manager can pick the right one
       - name: Remove incompatible ChromeDriver from PATH
@@ -57,12 +57,11 @@ jobs:
           python -u scraper/scrape.py
           echo "Run complete"
 
-      # ---- push JSON to your Wix endpoint ----
       - name: Push prices to Wix (Products)
         if: ${{ success() && hashFiles('data/scraped_data.json') != '' }}
         env:
-          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}   # https://whey2much.in/_functions/updateproducts
-          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}       # same as PRICES_WEBHOOK_TOKEN in Wix
+          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}
         run: |
           set -euo pipefail
           if [ -z "${WEBHOOK_URL:-}" ] || [ -z "${WEBHOOK_TOKEN:-}" ]; then
