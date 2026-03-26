@@ -55,7 +55,7 @@ def normalize_price_text(txt: str) -> str:
     if not txt:
         return ""
     txt = txt.replace("\u00A0", " ").replace("\u202F", " ").replace("\u2009", " ")
-    txt = re.sub(r"[^\d,.\s]", "", txt)  # strip currency symbols & letters
+    txt = re.sub(r"[^\d,.\s]", "", txt)
     txt = re.sub(r"\s+", "", txt)
     return txt
 
@@ -279,7 +279,6 @@ def build_driver() -> webdriver.Chrome:
     if chrome_bin:
         options.binary_location = chrome_bin
 
-    # Selenium Manager auto-installs a matching driver:
     driver = webdriver.Chrome(options=options)
     driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
     return driver
@@ -303,8 +302,11 @@ def scrape_all():
     driver = build_driver()
 
     try:
-        for product_name, websites in products.items():
-            print(f"\n[INFO] Scraping product: {product_name}")
+        for product_key, product_cfg in products.items():
+            product_name = (product_cfg.get("product_name") or "").strip()
+            websites = product_cfg.get("websites") or {}
+
+            print(f"\n[INFO] Scraping product: {product_name} ({product_key})")
             product_data: Dict[str, Dict] = {}
 
             for website_name, site_cfg in locator_cfg.items():
@@ -334,7 +336,9 @@ def scrape_all():
                         driver.get(product_url)
 
                         if website_name in ("Flipkart", "MuscleBlaze"):
-                            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+                            WebDriverWait(driver, 10).until(
+                                EC.presence_of_element_located((By.TAG_NAME, "body"))
+                            )
                             needles = extract_variant_needles(product_name)
                             click_variant_if_found(driver, *needles)
                             try:
@@ -342,7 +346,6 @@ def scrape_all():
                             except Exception:
                                 pass
 
-                        # Fast path: JSON-LD / meta first, then DOM, then page-source
                         p, raw = get_price_from_jsonld(driver)
                         if p is None:
                             p, raw = get_price_from_meta(driver)
@@ -356,12 +359,13 @@ def scrape_all():
                         price_value, raw_text = p, raw
                         status = "ok" if price_value is not None else "price_not_found"
                         break
+
                     except Exception as e:
                         status = f"error:{type(e).__name__}"
                         sleep(1.5 * attempt)
                 else:
                     try:
-                        fn_base = f"{slugify(product_name)}__{slugify(website_name)}"
+                        fn_base = f"{slugify(product_key)}__{slugify(website_name)}"
                         driver.save_screenshot(os.path.join(DEBUG_DIR, f"{fn_base}.png"))
                         with open(os.path.join(DEBUG_DIR, f"{fn_base}.html"), "w", encoding="utf-8") as fp:
                             fp.write(driver.page_source)
@@ -379,7 +383,10 @@ def scrape_all():
                     "link": product_url
                 }
 
-            results[product_name] = product_data
+            results[product_key] = {
+                "product_name": product_name,
+                "sites": product_data
+            }
 
     finally:
         driver.quit()
@@ -388,10 +395,14 @@ def scrape_all():
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     flat_rows = []
-    for product, sites in results.items():
+    for product_key, payload in results.items():
+        product_name = payload.get("product_name")
+        sites = payload.get("sites", {})
+
         for site, info in sites.items():
             flat_rows.append({
-                "Product": product,
+                "ProductKey": product_key,
+                "ProductName": product_name,
                 "Website": site,
                 "Status": info.get("status"),
                 "Currency": info.get("currency"),
@@ -399,6 +410,7 @@ def scrape_all():
                 "Link": info.get("link"),
                 "Raw": info.get("raw"),
             })
+
     pd.DataFrame(flat_rows).to_csv(OUTPUT_CSV_PATH, index=False)
 
     print("\nScraping completed. Output saved to:")
@@ -414,7 +426,15 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         test_site = sys.argv[1]
         test_url = sys.argv[2]
-        test_products = {"Ad-hoc Test": {test_site: test_url}}
+        test_products = {
+            "adhoc_test": {
+                "product_name": "Ad-hoc Test",
+                "websites": {
+                    test_site: test_url
+                }
+            }
+        }
         with open(PRODUCTS_PATH, "w", encoding="utf-8") as f:
             json.dump(test_products, f, indent=2)
+
     scrape_all()
