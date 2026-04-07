@@ -29,8 +29,8 @@ OUTPUT_CSV_PATH = os.path.join(DATA_DIR, "scraped_data.csv")
 DEBUG_DIR = os.path.join(DATA_DIR, "debug")
 
 DEFAULT_CURRENCY = "INR"
-PAGE_LOAD_TIMEOUT = 45
-WAIT_TIMEOUT = 20
+PAGE_LOAD_TIMEOUT = 40
+WAIT_TIMEOUT = 15
 MAX_RETRIES = 3
 VARIANT_WAIT_AFTER_CLICK = 0.8
 
@@ -362,7 +362,7 @@ def scrape_all():
 
                     except Exception as e:
                         status = f"error:{type(e).__name__}"
-                        sleep(1.5 * attempt)
+                        sleep(1.0 * attempt)
                 else:
                     try:
                         fn_base = f"{slugify(product_key)}__{slugify(website_name)}"
