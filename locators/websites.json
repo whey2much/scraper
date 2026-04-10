@@ -6,15 +6,12 @@
       { "locator_type": "css", "locator_value": "span.a-price-whole" }
     ]
   },
-  "Flipkart": {
-    "locators": [
-      { "locator_type": "css", "locator_value": "div.Nx9bqj.CxhGGd" },
-      { "locator_type": "css", "locator_value": "._30jeq3._16Jk6d" },
-      { "locator_type": "css", "locator_value": "div[class*='Nx9bqj']" },
-      { "locator_type": "css", "locator_value": "[class*='CxhGGd']" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(@class,'Nx9bqj') and contains(@class,'CxhGGd')]" },
-      { "locator_type": "xpath", "locator_value": "//*[@id='container']//div[contains(@class,'Nx9bqj')][1]" }
-    ]
+ "Flipkart": {
+  "locators": [
+    { "locator_type": "css", "locator_value": "div._30jeq3" },
+    { "locator_type": "css", "locator_value": "div[class*='_30jeq3']" },
+    { "locator_type": "xpath", "locator_value": "//div[contains(@class,'_30jeq3')]" }
+  ]
   },
   "Healthkart": {
     "locators": [
@@ -47,11 +44,15 @@
       { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
     ]
   },
-  "HealthXP": {
-    "locators": [
-      { "locator_type": "css", "locator_value": "[itemprop='price'], .final-price, .selling-price, .product-price .price" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
-    ]
+"HealthXP": {
+  "locators": [
+    { "locator_type": "css", "locator_value": "h3.product-selling-price" },
+    { "locator_type": "css", "locator_value": "h3.font-bold.product-selling-price" },
+    { "locator_type": "css", "locator_value": ".product-selling-price" },
+    { "locator_type": "xpath", "locator_value": "//h3[contains(@class,'product-selling-price')]" },
+    { "locator_type": "xpath", "locator_value": "//h3[contains(text(),'₹') and contains(@class,'product-selling-price')]" }
+  ]
+}
   },
   "JioMart": {
     "locators": [
