@@ -49,11 +49,10 @@
   },
   "HealthXP": {
     "locators": [
-          { "locator_type": "css", "locator_value": "h3.product-selling-price" },
-    { "locator_type": "css", "locator_value": ".product-selling-price" },
-    { "locator_type": "xpath", "locator_value": "//h3[contains(@class,'product-selling-price')]" },
-    { "locator_type": "xpath", "locator_value": "(//h3[contains(text(),'₹')])[1]" }
-
+      { "locator_type": "css", "locator_value": "h3.product-selling-price" },
+      { "locator_type": "css", "locator_value": ".product-selling-price" },
+      { "locator_type": "xpath", "locator_value": "//h3[contains(@class,'product-selling-price')]" },
+      { "locator_type": "xpath", "locator_value": "(//h3[contains(text(),'₹')])[1]" }
     ]
   },
   "JioMart": {
