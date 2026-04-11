@@ -23,7 +23,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 LOCATORS_DIR = os.path.join(BASE_DIR, "locators")
 
 PRODUCTS_PATH = os.path.join(DATA_DIR, "products.json")
-LOCATORS_PATH = os.path.join(LOCATORS_DIR, "websites.json")
+LOCATORS_PATH = os.path.join(LOCATORS_DIR, "websitesnew.json")
 OUTPUT_JSON_PATH = os.path.join(DATA_DIR, "scraped_data.json")
 OUTPUT_CSV_PATH = os.path.join(DATA_DIR, "scraped_data.csv")
 DEBUG_DIR = os.path.join(DATA_DIR, "debug")
