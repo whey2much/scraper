@@ -6,12 +6,12 @@
       { "locator_type": "css", "locator_value": "span.a-price-whole" }
     ]
   },
- "Flipkart": {
-  "locators": [
-    { "locator_type": "css", "locator_value": "div._30jeq3" },
-    { "locator_type": "css", "locator_value": "div[class*='_30jeq3']" },
-    { "locator_type": "xpath", "locator_value": "//div[contains(@class,'_30jeq3')]" }
-  ]
+  "Flipkart": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "div._30jeq3" },
+      { "locator_type": "css", "locator_value": "div[class*='_30jeq3']" },
+      { "locator_type": "xpath", "locator_value": "//div[contains(@class,'_30jeq3')]" }
+    ]
   },
   "Healthkart": {
     "locators": [
@@ -44,15 +44,13 @@
       { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
     ]
   },
-"HealthXP": {
-  "locators": [
-    { "locator_type": "css", "locator_value": "h3.product-selling-price" },
-    { "locator_type": "css", "locator_value": "h3.font-bold.product-selling-price" },
-    { "locator_type": "css", "locator_value": ".product-selling-price" },
-    { "locator_type": "xpath", "locator_value": "//h3[contains(@class,'product-selling-price')]" },
-    { "locator_type": "xpath", "locator_value": "//h3[contains(text(),'₹') and contains(@class,'product-selling-price')]" }
-  ]
-}
+  "HealthXP": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "h3.product-selling-price" },
+      { "locator_type": "css", "locator_value": "h3.font-bold.product-selling-price" },
+      { "locator_type": "css", "locator_value": ".product-selling-price" },
+      { "locator_type": "xpath", "locator_value": "//h3[contains(@class,'product-selling-price')]" }
+    ]
   },
   "JioMart": {
     "locators": [
