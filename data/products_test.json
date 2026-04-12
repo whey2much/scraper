@@ -1,9 +1,455 @@
 {
+  "wellcore_pure_micronised_creatine_monohydrate_100_gms_unflavoured": {
+    "product_name": "Wellcore - Pure Micronised Creatine Monohydrate | 100 gms | Unflavoured",
+    "websites": {
+      "Healthkart": "https://sovrn.co/h3ugxiv",
+      "Amazon": "https://amzn.to/4dvFfZw",
+      "Tata1mg": "https://sovrn.co/mbg4gfc"
+    }
+  },
+  "optimum_nutrition_on_serious_mass_1_kg_chocolate": {
+    "product_name": "Optimum Nutrition (ON) Serious Mass | 1 Kg | Chocolate",
+    "websites": {
+      "Healthkart": "https://sovrn.co/1jzs775",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-serious-mass-2?pId=7324758&vId=2260616&pa_weight=1+kg+%282.2+lb%29&pa_flavour=Chocolate",
+      "Amazon": "https://amzn.to/41Ud5Ad",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/serious-mass-chocolate-1115238?_pos=1&_sid=c49ef7f7c&_ss=r",
+      "Tata1mg": "https://sovrn.co/atvt28h"
+    }
+  },
+  "optimum_nutrition_on_micronized_creatine_monohydrate_250_gms_unflavoured": {
+    "product_name": "Optimum Nutrition (ON) Micronized Creatine Monohydrate | 250 gms | Unflavoured",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/1b3o6pf",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/micronized-creatine-powder-unflavoured-1118952?srsltid=AfmBOor-k0DQBZrY-5h6ab9gXsveZS07UvpySLyKGmGs-las4XSnA-Qy",
+      "Healthkart": "https://sovrn.co/1dz62dd",
+      "Amazon": "https://amzn.to/4tyax6y",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-micro-creatine-powder-2?pId=4322003&vId=1375346"
+    }
+  },
+  "optimum_nutrition_on_gold_standard_100_percent_whey_double_rich_chocolate_2_27_k": {
+    "product_name": "Optimum Nutrition (ON) Gold Standard 100% Whey | Double Rich Chocolate | 2.27 Kg",
+    "websites": {
+      "Amazon": "https://www.amazon.in/Nutrition-Standard-Chocolate-Recovery-Vegetarian/dp/B0DB1H9ZYR?crid=PJYNWSLDVH13&dib=eyJ2IjoiMSJ9.nhKumFG2adxlFqWWQRpcnZyk6Qgxg9Aj_cUKX7CU2Qqp7FYZVMguINMAmc42L2cCwl6aVGesnHh9q6mVEurYC1Osz8xeIjRmGm-B6hjdR2JUrucLUvRtKleXLlvBfinVbU3TGgyDp9avaSh3pVXZMx_uVO91FeA7qCdbY1pxk7D0rmoA5pOG_JYat14g6BA9nDFTlJ92RmM-2aJEHV9lsJCdO4kZWo1Iwy1YclcPJsi7Jf7yoS_7y8j9T_im1688aDZ2p05bIeDmsDIhcOlSvO1icvRotPFicDq-D8ag1_s.fA6Hc10L62QXyW6hMl_S0g6G0gxDdJ73sVXpFiBf8ME&dib_tag=se&keywords=on%2Bwhey%2Bprotein&qid=1745934519&sprefix=on%2Bwhey%2Bprotein%2Caps%2C457&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1%22%2C&linkCode=ll2&tag=whey2much-21&linkId=83ad496a4295348b3dda16f3982c64aa&ref_=as_li_ss_tl",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2?pId=4471481&vId=6901722&search_key=on+p&pa_flavour=Double+Rich+Chocolate&pa_weight=2.27+kg+%285+lb%29",
+      "Tata1mg": "https://sovrn.co/1ccsrms",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/collections/protein-powder/products/gold-standard-100-whey-protein-powder-double-rich-chocolate-1118950",
+      "Healthkart": "https://sovrn.co/1m4nii8"
+    }
+  },
+  "optimum_nutrition_on_gold_standard_100_percent_whey_907_gms_vanilla_ice_cream": {
+    "product_name": "Optimum Nutrition (ON) Gold Standard 100% Whey | 907 gms | Vanilla Ice Cream",
+    "websites": {
+      "Amazon": "https://amzn.to/4twK8pP",
+      "Tata1mg": "https://sovrn.co/5ctnnbe",
+      "Healthkart": "https://sovrn.co/itopd8v",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2?pId=4471481&vId=6083798&pa_flavour=Vanilla+Ice+Cream&pa_weight=907.2+g+%282+lb%29",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/gold-standard-100-whey-protein-powder-vanilla-ice-cream-1118947"
+    }
+  },
+  "optimum_nutrition_on_gold_standard_100_percent_whey_907_gms_double_rich_chocolat": {
+    "product_name": "Optimum Nutrition (ON) Gold Standard 100% Whey | 907 gms | Double Rich Chocolate",
+    "websites": {
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2?pId=4471481&vId=5901861",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/gold-standard-100-whey-protein-powder-double-rich-chocolate-1118949?_pos=4&_sid=0e97b422e&_ss=r",
+      "Tata1mg": "https://sovrn.co/804pudw",
+      "Amazon": "https://www.amazon.in/Nutrition-Standard-Chocolate-Recovery-Vegetarian/dp/B0DL9VGVSM?crid=33U4PXGLO86CH&dib=eyJ2IjoiMSJ9.Ljz1JCsIQL5d7ywQuvK_sV9FHrSxc5zQqfo9BlNNZoEfWkyB0haWsHpFEhajELumva3ZRD39u559tIPcf9ZRnF4XiKakI_rDB7XM2-8MuUnZGYvXOCsdPUNZSYS1OAa3hbwFNENoRjbbfJi7xa54r2tO2_aWBiXIwqMjD6zRPa44wPzAJU3dSvzxps-GcmIX4d8efrtQX0N3KM59BdUMmN46cxgKQAYnvPxduDdOwX9HOjV13fj0377ayUSFHWr8v7LrZ6qARndDrE6jWcdCb-1icvRotPFicDq-D8ag1_s.GBAvBdnq8mAirVY1E3BduvS6_jfMzrvpGZTWhSyZbpQ&dib_tag=se&keywords=on%2Bwhey&qid=1747029677&sprefix=on%2Bwhey%2Caps%2C1093&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&linkCode=ll2&tag=whey2much-21&linkId=dd9970ca1fc42c6fa4aefb2a986e5129&ref_=as_li_ss_tl",
+      "Healthkart": "https://sovrn.co/y14a570"
+    }
+  },
+  "optimum_nutrition_on_gold_standard_100_percent_whey_2_27_kg_vanilla_ice_cream": {
+    "product_name": "Optimum Nutrition (ON) Gold Standard 100% Whey | 2.27 Kg | Vanilla Ice Cream",
+    "websites": {
+      "Healthkart": "https://sovrn.co/1j433hs",
+      "Tata1mg": "https://sovrn.co/1ph0jef",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2?pId=4471481&vId=7849446&pa_flavour=Vanilla+Ice+Cream&pa_weight=2.27+kg+%285+lb%29",
+      "Amazon": "https://amzn.to/4vjkCpP",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/gold-standard-100-whey-protein-powder-vanilla-ice-cream-1118910"
+    }
+  },
+  "on_gold_standard_100_percent_isolate_1_36_kg_chocolate_bliss": {
+    "product_name": "ON Gold Standard 100% Isolate | 1.36 Kg | Chocolate Bliss",
+    "websites": {
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-gold-standard-100-isolate?pId=2126402&vId=2270197",
+      "Healthkart": "https://sovrn.co/171nouf"
+    }
+  },
+  "myprotein_impact_whey_protein_2_5_kg_chocolate_brownie": {
+    "product_name": "MyProtein Impact Whey Protein | 2.5 Kg | Chocolate Brownie",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/ko3bbo5",
+      "MyProtein": "https://sovrn.co/qm0lzza"
+    }
+  },
+  "myprotein_impact_whey_protein_1_kg_cookies_and_cream": {
+    "product_name": "MyProtein Impact Whey Protein | 1 Kg | Cookies and Cream",
+    "websites": {
+      "Amazon": "https://www.amazon.in/Protein-Impact-Whey-Cookies-Cream/dp/B07MTF2BPP?crid=3AMSQPHTV26NN&dib=eyJ2IjoiMSJ9.ybz3NbQIFIX731nWp4dXwAWQDkOO_20h90m1YTWqMSjBptXwqJw5Xin6ktxMjrtrYgGybzu0Tin1Iy4ichXXIXJSJadIzuLGsOBMu43N8sXq6it_ppdUVBy-yW2w24J2wL219-lIkw7qPYQEQ2lpSvsmQoNvXIKqiBwXKtPccsaUu8NpRVwE0P6gG53vcSIySAoj6Y07Z5g11wsvWBzREHPHrQFMmR8XmF2dcwFMVwXqD2x5ZXEznGWQmT4ZgmY8Irp2o7GNMbYbBqgVk0-0it4QR7jtfrokXRX3f2uVYTg.yKwz7JMlF8Urwupw1MVPVbZvc9q8EZleOT3XVjcasLs&dib_tag=se&keywords=myprotein%2Bwhey&qid=1747033800&sprefix=myprotein%2Bwhey%2B1%2Bk%2Caps%2C910&sr=8-5&th=1&linkCode=ll1&tag=whey2much-21&linkId=20e9950cf798ff467661d211d8c65338&language=en_IN&ref_=as_li_ss_tl",
+      "Tata1mg": "https://sovrn.co/1dohezz",
+      "MyProtein": "https://sovrn.co/1d40w52"
+    }
+  },
+  "myprotein_impact_whey_protein_1_kg_chocolate_brownie": {
+    "product_name": "MyProtein Impact Whey Protein | 1 Kg | Chocolate Brownie",
+    "websites": {
+      "Amazon": "https://www.amazon.in/Myprotein-Glutamine-Post-Workout-Recovery-Chocolate/dp/B07MTDB6F4?crid=254LN4CSV3PFE&dib=eyJ2IjoiMSJ9.Zo_tqvT-PjaShGgSX5ByHSXeK8LiRAZ1v_93HlijRoI7lpeD46nBEJpGDgGLCcAh9tF4bdYtxfKa0ZOq8OWGZv0pJHS9UZB0TBqtpc7fN8tRWTuzZxlbaxPgk8FN0S2MW2FgjfhET7HRRwX9MofmPoJqnCV4GwInIgKOGwAByDNx_47yTPhAQNoPR7gVKcKVYr47JV7FeMkK2ifXOkjDG0e23gInd6ChkFhg8Ih-udrFmQjteoaAYgrMQU1Jjofr_CQOheIjvNS1NUKWPHpk0SdvXSZ49bKqhleYPEXJlbU.UMd5f5XKgiJQYptKRV23RGWPPH37HhYr3p4WZhHmD0k&dib_tag=se&keywords=myprotein%2Bwhey&nsdOptOutParam=true&qid=1746009525&sprefix=myprotein%2Bwh%2Caps%2C530&sr=8-5&th=1&linkCode=ll1&tag=whey2much-21&linkId=f1bb3b9ae7e2ee4d3ca49218e6bc20aa&language=en_IN&ref_=as_li_ss_tl",
+      "MyProtein": "https://sovrn.co/mydx8rm",
+      "Healthkart": "https://www.healthkart.com/sv/myprotein-impact-whey-protein/SP-37697?navKey=VRNT-69539"
+    }
+  },
+  "muscletech_platinum_creatine_monohydrate_250_gms_unflavoured": {
+    "product_name": "MuscleTech Platinum Creatine Monohydrate | 250 gms | Unflavoured",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/1979zw8",
+      "Nutrabay": "https://nutrabay.com/product/muscletech-platinum-100-creatine?pId=5382494&vId=8826511",
+      "Amazon": "https://amzn.to/4t3faGa",
+      "Healthkart": "https://sovrn.co/ayhlxfq"
+    }
+  },
+  "muscletech_platinum_100_percent_whey_isolate_1_81_milk_chocolate": {
+    "product_name": "MuscleTech Platinum 100% Whey Isolate | 1.81 | Milk Chocolate",
+    "websites": {
+      "Healthkart": "https://sovrn.co/1hvchkl",
+      "Tata1mg": "https://sovrn.co/a31gf1o",
+      "Amazon": "https://amzn.to/41lEnPS"
+    }
+  },
+  "muscletech_nitrotech_whey_protein_907_gms_milk_chocolate": {
+    "product_name": "MuscleTech NitroTech Whey Protein | 907 gms| Milk Chocolate",
+    "websites": {
+      "Healthkart": "https://sovrn.co/rqkqt6o",
+      "Tata1mg": "https://sovrn.co/hu4tzyf",
+      "Amazon": "https://amzn.to/4sqPLoP"
+    }
+  },
+  "muscletech_mass_tech_extreme_2000_3_kg_triple_chocolate_brownie": {
+    "product_name": "MuscleTech Mass Tech Extreme 2000 | 3 Kg | Triple Chocolate Brownie",
+    "websites": {
+      "Amazon": "https://amzn.to/4eaB1qk",
+      "Healthkart": "https://sovrn.co/17e7ns7",
+      "Nutrabay": "https://nutrabay.com/product/muscletech-masstech-extreme-2000?pId=4100118&vId=1534006",
+      "Tata1mg": "https://sovrn.co/1kbexlk"
+    }
+  },
+  "muscleblaze_weight_gainer_1_kg_chocolate": {
+    "product_name": "MuscleBlaze Weight Gainer | 1 Kg | Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/3O6OCVi",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-weight-gainer-with-added-digezyme/SP-43383?navKey=VRNT-78523&itracker=w:search||searchedTerm-weight%20gainer|;",
+      "Healthkart": "https://sovrn.co/maeic6y",
+      "Tata1mg": "https://sovrn.co/egxn3uu"
+    }
+  },
+  "muscleblaze_super_gainer_black_2_kg_chocolate": {
+    "product_name": "MuscleBlaze Super Gainer Black | 2 kg | Chocolate",
+    "websites": {
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-super-gainer-black/SP-105316?navKey=VRNT-200198&itracker=w:search||searchedTerm-super%20gainer%20black|;",
+      "Amazon": "https://amzn.to/4sUCIwN",
+      "Tata1mg": "https://sovrn.co/100su8r",
+      "Healthkart": "https://sovrn.co/cfr56a0"
+    }
+  },
+  "muscleblaze_raw_whey_isolate_100_percent_clean_whey_1_kg_unflavoured": {
+    "product_name": "MuscleBlaze Raw Whey Isolate 100% Clean Whey | 1 kg | Unflavoured",
+    "websites": {
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-raw-whey-isolate/SP-41105?navKey=VRNT-74980&itracker=w:search||searchedTerm-MuscleBlaze%20Raw%20Whey%20Isolate%20100%25%20Clean%20Whey|;p:2|;e:74980|;",
+      "Amazon": "https://amzn.to/3OoqIEN",
+      "Healthkart": "https://sovrn.co/1jexxl2",
+      "Tata1mg": "https://sovrn.co/17vtr03"
+    }
+  },
+  "muscleblaze_pre_workout_200_xtreme_200_gms_fruit_punch": {
+    "product_name": "MuscleBlaze Pre Workout 200 Xtreme | 200 gms | Fruit Punch",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/6nif72b",
+      "Healthkart": "https://sovrn.co/xbc0me1",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-pre-workout-200-xtreme/SP-107096?navKey=VRNT-228075",
+      "Amazon": "https://amzn.to/47QTCUC"
+    }
+  },
+  "muscleblaze_micronized_creatine_monohydrate_powder_100_gms_unflavoured": {
+    "product_name": "MuscleBlaze Micronized Creatine Monohydrate Powder | 100 gms | Unflavoured",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/uecm3y5",
+      "Amazon": "https://amzn.to/4c1i8EY",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-micronised-creatine-monohydrate/SP-134811?navKey=VRNT-266177&itracker=w:search||searchedTerm-MuscleBlaze%20Micronized%20Creatine%20Monohydrate%20Powder|;p:5|;e:266177|;",
+      "Healthkart": "https://sovrn.co/1br4ujf"
+    }
+  },
+  "muscleblaze_mass_gainer_xxl_3_kg_chocolate": {
+    "product_name": "MuscleBlaze Mass Gainer XXL | 3 Kg | Chocolate",
+    "websites": {
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-mass-gainer-xxl-with-complex-carbs-and-proteins-in-3:1-ratio/SP-33848?navKey=VRNT-71252&itracker=w:search||searchedTerm-mass%20gainer|;",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-mass-gainer-xxl?pId=8847901&vId=1071262&pa_weight=3+kg+%286.6+lb%29&pa_flavour=Chocolate",
+      "Amazon": "https://amzn.to/4skrMY8",
+      "Healthkart": "https://sovrn.co/1e2dp2n",
+      "Tata1mg": "https://sovrn.co/gtbfdp3"
+    }
+  },
+  "muscleblaze_iso_zero_100_percent_whey_isolate_2_kg_ice_cream_chocolate": {
+    "product_name": "MuscleBlaze Iso-Zero 100% Whey Isolate | 2 Kg | Ice Cream Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4tA2Som",
+      "Tata1mg": "https://sovrn.co/12z44m0",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-iso-zero-low-carb?pId=8073884&vId=2820694",
+      "Healthkart": "https://sovrn.co/1mpww9h",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-iso-zero/SP-45405?navKey=VRNT-89955&itracker=w:search||searchedTerm-mb%20isolate%20|;"
+    }
+  },
   "muscleblaze_biozyme_performance_whey_2kg_rich_chocolate": {
     "product_name": "MuscleBlaze Biozyme Performance Whey | 2kg | Rich Chocolate",
     "websites": {
-      "Healthkart": "https://www.healthkart.com/sv/muscleblaze-biozyme-performance-whey-protein-powder/SP-91405?navKey=VRNT-170139&itracker=w:home|clearance-sale-|-upto-55%25-off|1|;p:1|;c:muscleblaze-biozyme-performance-whey-protein-powder%2C-4.4-lb-rich-chocolate-|;e:170139|;",
-      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-performance-whey/SP-88093?navKey=VRNT-164773&itracker=w:search||searchedTerm-bioz|;p:1|;e:164773|;"
+      "Tata1mg": "https://sovrn.co/m5sfwf1",
+      "Healthkart": "https://sovrn.co/q240jdw",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-performance-whey/SP-88093?navKey=VRNT-164773&itracker=w:search||searchedTerm-bioz|;p:1|;e:164773|;",
+      "Amazon": "https://www.amazon.in/MuscleBlaze-Performance-Certified-Chocolate-servings/dp/B091PPXCVK?th=1&linkCode=ll2&tag=whey2much-21&linkId=178fdcc20fe877e8615adc379793619f&ref_=as_li_ss_tl",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-biozyme-performance-whey?pId=6944078&vId=2025830&pa_weight=2+kg+%284.4+lb%29&pa_flavour=Rich+Chocolate"
+    }
+  },
+  "muscleblaze_biozyme_performance_whey_2_kg_chocolate_peanut_butter": {
+    "product_name": "MuscleBlaze Biozyme Performance Whey | 2 Kg | Chocolate Peanut Butter",
+    "websites": {
+      "Healthkart": "https://sovrn.co/1550cup",
+      "Tata1mg": "https://sovrn.co/11zdekh",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-performance-whey/SP-88093?navKey=VRNT-220026",
+      "Amazon": "https://www.amazon.in/MuscleBlaze-Performance-Clinically-Absorption-Certified/dp/B0BZD18P85?th=1&linkCode=ll2&tag=whey2much-21&linkId=064da0c45dfaea539d7e052491fcc26f&ref_=as_li_ss_tl",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-biozyme-performance-whey?pId=6944078&pa_flavour=Chocolate%20Hazelnut&pa_weight=2%20kg%20%284.4%20lb%29&ref=aryan475&utm_campaign=NB&utm_medium=GoAffPro&utm_source=affiliate%20&utm_term=CPS&vId=5904505"
+    }
+  },
+  "muscleblaze_biozyme_performance_whey_1_kg_rich_chocolate": {
+    "product_name": "MuscleBlaze Biozyme Performance Whey | 1 Kg | Rich Chocolate",
+    "websites": {
+      "Healthkart": "https://sovrn.co/s0bcofi",
+      "Tata1mg": "https://sovrn.co/1o5g5nh",
+      "Amazon": "https://www.amazon.in/MuscleBlaze-Performance-Certified-Chocolate-servings/dp/B091HTLXL3?crid=1YDPKTA2TZN81&dib=eyJ2IjoiMSJ9.EQHroRcedhGYXnLFpQt5vVezK7U3N9cJUqYoelU0Awnx863MMnnTNkohw4D_Xcywh1HzmT3qDoXGsAp6RYNOPdUFi5joqQ0SH4E-u389Ng6nKEfNHFw2VlyWI4VZZ6ccXrp6pcfRCKFAn_nzVl81NCJdfgVIQ6grONkUDBlqDKUWA9owuVYtmsJwfNb2XHogD4K1CUqxmEEGXk3FPbCA3mONR_9TfrPSgFjzd1kT9i-BQw8IYseCA6_L6zqnfyVuoM-eOmiDk9MvEYCelvdYl1_1EpYeKOYj63fQBdXjy2Q.VbTjxX9lTMGYcG9w648n9aeiYIPzd1630UUk4n8XlUA&dib_tag=se&keywords=MuscleBlaze%2BBiozyme%2BPerformance%2BWhey&qid=1747028276&sprefix=big%2Bmuscles%2Bpre%2Bworkout%2Caps%2C1802&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&linkCode=ll2&tag=whey2much-21&linkId=b7fd48584f75efde2c217f73824d6849&ref_=as_li_ss_tl",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-biozyme-performance-whey?pId=6944078&vId=9158949&pa_weight=1+kg+%282.2+lb%29&pa_flavour=Rich+Chocolate",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-performance-whey/SP-88093?navKey=VRNT-165145"
+    }
+  },
+  "muscleblaze_biozyme_low_carb_1_kg_ice_cream_chocolate": {
+    "product_name": "MuscleBlaze Biozyme Low Carb | 1 Kg | Ice Cream Chocolate",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/1quuovi",
+      "Healthkart": "https://sovrn.co/19sn92t",
+      "Amazon": "https://amzn.to/3Qd3aDj",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-iso-zero/SP-45405?navKey=VRNT-89957"
+    }
+  },
+  "labrada_muscle_mass_gainer_1_kg_chocolate": {
+    "product_name": "Labrada Muscle Mass Gainer| 1 kg | Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4tCcZsV",
+      "Tata1mg": "https://sovrn.co/lrk5t8n",
+      "Healthkart": "https://sovrn.co/1dqfn19",
+      "Nutrabay": "https://nutrabay.com/product/labrada-mass-gainer/?pId=4955656&vId=9857745&search_key=labrada&pa_weight=1+kg+%282.2+lb%29&pa_flavour=Chocolate"
+    }
+  },
+  "isopure_low_carb_100_percent_whey_protein_1_kg_dutch_chocolate": {
+    "product_name": "Isopure Low Carb 100% Whey Protein | 1 Kg | Dutch Chocolate",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/11wrgbk",
+      "Healthkart": "https://sovrn.co/9k1wblx",
+      "Amazon": "https://amzn.to/4vi16dp",
+      "Nutrabay": "https://nutrabay.com/product/natures-best-isopure-low-carb?pId=1899939&vId=5870113"
+    }
+  },
+  "gnc_weight_gainer_3_kg_double_chocolate": {
+    "product_name": "GNC weight Gainer | 3 Kg | Double Chocolate",
+    "websites": {
+      "Nutrabay": "https://nutrabay.com/product/gnc-weight-gainer-powder?pId=7507127&vId=6242486",
+      "Healthkart": "https://sovrn.co/rm1j9n8",
+      "Amazon": "https://amzn.to/3Odv1CO",
+      "Tata1mg": "https://sovrn.co/6ugzleb"
+    }
+  },
+  "dymatize_nutrition_elite_whey_protein_2_3kg_vanilla": {
+    "product_name": "Dymatize Nutrition Elite Whey Protein | 2.3kg | Vanilla",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/9etzyzl",
+      "Healthkart": "https://sovrn.co/1fjsohj"
+    }
+  },
+  "dymatize_nutrition_elite_whey_protein_2_3_kg_rich_chocolate": {
+    "product_name": "Dymatize Nutrition Elite Whey Protein | 2.3 Kg | Rich Chocolate",
+    "websites": {
+      "Healthkart": "https://sovrn.co/182ug4m",
+      "Tata1mg": "https://sovrn.co/iflg1vx",
+      "Amazon": "https://amzn.to/4twLKQp",
+      "Nutrabay": "https://nutrabay.com/product/dymatize-elite-100-whey-protein?pId=7333254&vId=4587259"
+    }
+  },
+  "dymatize_iso100_hydrolyzed_isolate_2_3_kg_gourmet_chocolate": {
+    "product_name": "Dymatize ISO100 Hydrolyzed isolate | 2.3 Kg | Gourmet Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/3PXMb83",
+      "Tata1mg": "https://sovrn.co/wgy3lg7",
+      "Nutrabay": "https://nutrabay.com/product/dymatize-iso-100-protein?pId=9950150&vId=8753769",
+      "Healthkart": "https://sovrn.co/18lbc7j"
+    }
+  },
+  "cellucor_c4_original_pre_workout_390_gms_icy_blue_razz": {
+    "product_name": "Cellucor C4 Original Pre-Workout | 390 gms | Icy Blue Razz",
+    "websites": {
+      "Tata1mg": "https://sovrn.co/qb0ofwg",
+      "Healthkart": "https://www.healthkart.com/sv/cellucor-c4-explosive-preworkout/SP-38902?navKey=VRNT-72129&srsltid=AfmBOooTCPh_sB-USI83J_rkJMPYPuo-zSen4o9wuLxdYfx1W7G7NjPr"
+    }
+  },
+  "big_muscles_nutrition_karnage_pre_workout_300_gms_sex_on_the_beach": {
+    "product_name": "Big Muscles Nutrition Karnage Pre Workout | 300 gms | Sex on the Beach",
+    "websites": {
+      "Amazon": "https://amzn.to/47SVaxs"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_1_kg_molten_chocolate_cake": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 1 Kg | Molten Chocolate Cake",
+    "websites": {
+      "Amazon": "https://amzn.to/4vkQV7O",
+      "Tata1mg": "https://sovrn.co/10b0je0",
+      "Healthkart": "https://sovrn.co/4qeg6bs",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?navKey=VRNT-249465&srsltid=AfmBOop22wSa6h7S332V7J37YuLFkjTZX3eivwK6Y_GYpAUqqVf_CkeK"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_1_kg_chocolate_fudge": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 1 Kg | Chocolate Fudge",
+    "websites": {
+      "Amazon": "https://amzn.to/3PZzzgI",
+      "Tata1mg": "https://sovrn.co/8z8fhou",
+      "Healthkart": "https://sovrn.co/mwsc8tp",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?navKey=VRNT-235207&srsltid=AfmBOoqWl5cCgVo62CNX9fhXbUhPzJNoQ9g14hAIE-de0hzXYyVSqZxV"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_1_kg_cookies_and_cream": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 1 Kg | Cookies and Cream",
+    "websites": {
+      "Amazon": "https://amzn.to/4t1EOLh",
+      "Healthkart": "https://sovrn.co/1lnyhmf",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?navKey=VRNT-257771&srsltid=AfmBOoqAr2mJk69nvwmspC6WImyjEDti2dM9anVN_uVQ8t7sTzLzN76T"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_2_kg_molten_chocolate_cake": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 2 Kg | Molten Chocolate Cake",
+    "websites": {
+      "Amazon": "https://amzn.to/4eisjX7",
+      "Tata1mg": "https://sovrn.co/wjoy1jh",
+      "Healthkart": "https://sovrn.co/1055hia",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?navKey=VRNT-249463&srsltid=AfmBOoqOopaHa0WVAVkULVnDytesYRnttVO_d6m1O70Re4AyFFyAufBg"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_2_kg_chocolate_fudge": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 2 Kg | Chocolate Fudge",
+    "websites": {
+      "Amazon": "https://amzn.to/4ceZEje",
+      "Tata1mg": "https://sovrn.co/1qihlz4",
+      "Healthkart": "https://sovrn.co/b4eb36x",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?srsltid=AfmBOoqrdUB2huIsa7LHmRbUUPZcAEBexXbX1kaq594qSO96aPe8hxCI"
+    }
+  },
+  "muscleblaze_biozyme_whey_pr_2_kg_cookies_and_cream": {
+    "product_name": "MuscleBlaze Biozyme Whey PR | 2 Kg | Cookies and Cream",
+    "websites": {
+      "Amazon": "https://amzn.to/4mm8dNM",
+      "Tata1mg": "https://sovrn.co/4popw0e",
+      "Healthkart": "https://sovrn.co/ck4xeus",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-whey-pr/SP-122029?navKey=VRNT-249897&srsltid=AfmBOorCaGk6RXcB4L4U3P16D0G8VLUvM3LtJ4ZB1DUZpyPZMhPPS8ih"
+    }
+  },
+  "muscleblaze_biozyme_iso_zero_2_kg_cookies_and_cream": {
+    "product_name": "MuscleBlaze Biozyme Iso-Zero Low Carb | 2 Kg | Cookies and Cream",
+    "websites": {
+      "Amazon": "https://amzn.to/4tHQYJo",
+      "Tata1mg": "https://sovrn.co/11tp7k6",
+      "Healthkart": "https://sovrn.co/zs8i4xv",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-iso-zero/SP-45405?navKey=VRNT-204186&srsltid=AfmBOoo9l4EZwgz35mse4sHma8slLqWFAwyzxawe3HfbFwti6N3qAKfa"
+    }
+  },
+  "muscleblaze_biozyme_iso_zero_2_kg_ice_cream_chocolate": {
+    "product_name": "MuscleBlaze Biozyme Iso-Zero Low Carb | 2 Kg | Ice Cream Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4t8qtNi",
+      "Tata1mg": "https://sovrn.co/okpfs4h",
+      "Nutrabay": "https://nutrabay.com/product/muscleblaze-iso-zero-low-carb/?pId=8073884&vId=2820694",
+      "Healthkart": "https://sovrn.co/1j3qjn9",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-biozyme-iso-zero/SP-45405?srsltid=AfmBOoqHwR50F6EBjw7nid18t9uyh4oZjNl247ID5xkv4ozOS6R6UURu"
+    }
+  },
+  "muscleblaze_biozyme_iso_zero_4_kg_ice_cream_chocolate": {
+    "product_name": "MuscleBlaze Biozyme Iso-Zero Low Carb | 4 Kg | Ice Cream Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4cq0Twd",
+      "Tata1mg": "https://sovrn.co/16uiyoz",
+      "Healthkart": "https://sovrn.co/rj0jo6w",
+      "MuscleBlaze": "https://sovrn.co/4jyc0d4"
+    }
+  },
+  "optimum_nutrition_gold_standard_whey_1_7_kg_double_rich_chocolate": {
+    "product_name": "Optimum Nutrition Gold Standard Whey | 1.7 Kg | Double Rich Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4vuoDrK",
+      "Tata1mg": "https://sovrn.co/14cr5pt",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2/?pId=4471481&vId=4263138",
+      "Healthkart": "https://sovrn.co/vvc9q5q",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/gold-standard-100-whey-protein-powder-double-rich-chocolate-1139560"
+    }
+  },
+  "optimum_nutrition_gold_standard_whey_907_g_vanilla_ice_cream": {
+    "product_name": "Optimum Nutrition Gold Standard Whey | 907 g | Vanilla Ice Cream",
+    "websites": {
+      "Amazon": "https://amzn.to/4cpj6Kf",
+      "Tata1mg": "https://sovrn.co/xnp0qer",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-100-whey-gold-standard-2/?pId=4471481&vId=6083798",
+      "Healthkart": "https://sovrn.co/mc6e20k",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/gold-standard-100-whey-protein-powder-vanilla-ice-cream-1118947?_pos=1&_sid=c36653d51&_ss=r"
+    }
+  },
+  "muscleblaze_creamp_creatine_monohydrate_250_g": {
+    "product_name": "MuscleBlaze Creatine Monohydrate CreAMP | 250 g | Unflavoured",
+    "websites": {
+      "Amazon": "https://amzn.to/4vl7wZn",
+      "Tata1mg": "https://sovrn.co/ry1d38z",
+      "Healthkart": "https://sovrn.co/1ib1pei",
+      "MuscleBlaze": "https://www.muscleblaze.com/sv/muscleblaze-creatine-monohydrate-creamp/SP-33852?navKey=VRNT-74477&srsltid=AfmBOorf5uM28a9uvvmfAmfpKxhUkfaqTShatAcrI4uKlr2FrCfJDMV7"
+    }
+  },
+  "optimum_nutrition_serious_mass_3_kg_chocolate": {
+    "product_name": "Optimum Nutrition Serious Mass | 3 Kg | Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4t5Y1vk",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-serious-mass-weight-gainer-powder-vegetarian/?pId=1243162&vId=4843360",
+      "Healthkart": "https://sovrn.co/o45x4c0",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/serious-mass-chocolate-1110152"
+    }
+  },
+  "gnc_pro_performance_weight_gainer_3_kg_double_chocolate": {
+    "product_name": "GNC Pro Performance Weight Gainer | 3 Kg | Double Chocolate",
+    "websites": {
+      "Amazon": "https://amzn.to/4vpH0he",
+      "Nutrabay": "https://nutrabay.com/product/gnc-weight-gainer-powder/?pId=7507127&vId=6242486",
+      "Healthkart": "https://sovrn.co/bk94thy"
+    }
+  },
+  "optimum_nutrition_on_micronized_creatine_monohydrate_100_gms_unflavoured": {
+    "product_name": "Optimum Nutrition (ON) Micronized Creatine Monohydrate | 100 gms | Unflavoured",
+    "websites": {
+      "Amazon": "https://amzn.to/4cEctF1",
+      "Tata1mg": "https://sovrn.co/553jryw",
+      "Nutrabay": "https://nutrabay.com/product/optimum-nutrition-on-micro-creatine-powder-2/?pId=4322003&vId=7452559",
+      "Healthkart": "https://sovrn.co/9fcvfl9",
+      "OptimumNutrition": "https://www.optimumnutrition.co.in/products/micronized-creatine-powder-unflavoured-100-g-1145331?srsltid=AfmBOoryqqxK9eUtBa9w_gUKBUJyQzujqzENL5IBqxeXcJMQ0Drat0l8"
+    }
+  },
+  "ensure_nutritional_powder_950_gms_vanilla": {
+    "product_name": "Ensure Nutritional Powder | 950 gms | Vanilla",
+    "websites": {
+      "Amazon": "https://amzn.to/4cIMdsf",
+      "Tata1mg": "https://sovrn.co/19jceox"
+    }
+  },
+  "cellucor_c4_original_pre_workout_164_g_orange_burst": {
+    "product_name": "Cellucor C4 Original Pre Workout | 164 g | Orange Burst",
+    "websites": {
+      "Amazon": "https://amzn.to/4mIJunf",
+      "Nutrabay": "https://nutrabay.com/product/cellucor-c4-original-pre-workout/?pId=3589024&vId=9959266",
+      "Healthkart": "https://sovrn.co/1k8yfrm"
     }
   }
 }
