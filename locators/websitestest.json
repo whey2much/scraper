@@ -1,9 +1,18 @@
 {
 "MuscleBlaze": {
   "locators": [
-    { "locator_type": "css", "locator_value": "div.offer-price span" },
-    { "locator_type": "css", "locator_value": "[class*='offer-price'] span" },
-    { "locator_type": "xpath", "locator_value": "//div[contains(@class,'offer-price')]//span" }
+    {
+      "locator_type": "css",
+      "locator_value": "div.offer-price.priceSectionTag_offer-price__GbHif > span"
+    },
+    {
+      "locator_type": "css",
+      "locator_value": "div[class*='offer-price'] > span"
+    },
+    {
+      "locator_type": "xpath",
+      "locator_value": "//div[contains(@class,'offer-price')]/span[string-length(normalize-space()) > 0]"
+    }
   ]
 }
 }
