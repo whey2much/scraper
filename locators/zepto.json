@@ -1,1 +1,9 @@
-
+{
+"Zepto": {
+  "locators": [
+    { "locator_type": "css", "locator_value": "span[class*='cu4Qk6']" },
+    { "locator_type": "xpath", "locator_value": "//span[contains(text(),'₹') and contains(text(),'3199')]" },
+    { "locator_type": "xpath", "locator_value": "//div[contains(@class,'u-flex') and .//span[contains(text(),'₹')]]//span[last()]" }
+  ]
+}
+}
