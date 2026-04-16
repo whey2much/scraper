@@ -1,9 +1,9 @@
 name: Scrape (Selenium) and Save Artifacts
 
 on:
-  # 02:00 IST daily == 20:30 UTC
+  # 06:00 IST daily == 00:30 UTC
   schedule:
-    - cron: "30 20 * * *"
+    - cron: "30 0 * * *"
   workflow_dispatch: {}
 
 jobs:
@@ -21,14 +21,12 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      # Install Chrome/Chromium on the runner
       - name: Install Google Chrome (pin major to avoid driver flaps)
         id: chrome
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: "141"
 
-      # Remove any preinstalled chromedriver so Selenium Manager can pick the right one
       - name: Remove incompatible ChromeDriver from PATH
         run: |
           if command -v chromedriver; then
