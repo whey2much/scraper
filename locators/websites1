@@ -1,0 +1,57 @@
+{
+  "Amazon": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "#corePrice_feature_div .a-price .a-offscreen" },
+      { "locator_type": "css", "locator_value": "#corePriceDisplay_desktop_feature_div .a-price .a-offscreen" },
+      { "locator_type": "css", "locator_value": "#apex_desktop .a-price .a-offscreen" },
+      { "locator_type": "xpath", "locator_value": "//*[@id='corePrice_feature_div']//*[contains(@class,'a-offscreen')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[@id='corePriceDisplay_desktop_feature_div']//*[contains(@class,'a-offscreen')][1]" },
+      { "locator_type": "xpath", "locator_value": "//span[@id='priceblock_dealprice' or @id='priceblock_ourprice' or @id='priceblock_saleprice']" }
+    ]
+  },
+  "Healthkart": {
+    "locators": [
+      { "locator_type": "xpath", "locator_value": "//h1/following::*[contains(normalize-space(),'Price:')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'Price: ₹')][1]" },
+      { "locator_type": "css", "locator_value": ".price .value" },
+      { "locator_type": "css", "locator_value": ".final-price, .finalPrice" }
+    ]
+  },
+  "MuscleBlaze": {
+    "locators": [
+      { "locator_type": "xpath", "locator_value": "//h1/following::*[contains(normalize-space(),'₹')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'Inclusive all Taxes')]/preceding::*[contains(normalize-space(),'₹')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'Choose Flavour and Weight')]/preceding::*[contains(normalize-space(),'₹')][1]" }
+    ]
+  },
+  "OptimumNutrition": {
+    "locators": [
+      { "locator_type": "css", "locator_value": ".price__sale .price-item--sale" },
+      { "locator_type": "css", "locator_value": ".price-item--sale" },
+      { "locator_type": "css", "locator_value": "[data-product-price]" },
+      { "locator_type": "css", "locator_value": ".price .price-item" }
+    ]
+  },
+  "MyProtein": {
+    "locators": [
+      { "locator_type": "xpath", "locator_value": "//h1/following::*[contains(normalize-space(),'₹')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'discounted price')][1]" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'Inclusive of all taxes')]/preceding::*[contains(normalize-space(),'₹')][1]" }
+    ]
+  },
+  "Nutrabay": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "[itemprop='price']" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(normalize-space(),'Selling Price')]/following::*[contains(normalize-space(),'₹')][1]" },
+      { "locator_type": "xpath", "locator_value": "//h1/following::*[contains(normalize-space(),'₹')][1]" }
+    ]
+  },
+  "Tata1mg": {
+    "locators": [
+      { "locator_type": "css", "locator_value": "div[class*='PriceDetails_discount-div']" },
+      { "locator_type": "css", "locator_value": "div[class*='OtcPriceBox_price-box'] div[class*='PriceDetails_discount-div']" },
+      { "locator_type": "xpath", "locator_value": "//*[contains(@class,'PriceDetails_discount-div')]" },
+      { "locator_type": "xpath", "locator_value": "//h1/following::*[contains(normalize-space(),'₹')][1]" }
+    ]
+  }
+}
