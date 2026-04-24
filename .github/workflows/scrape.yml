@@ -1,9 +1,9 @@
 name: Scrape (Selenium) and Save Artifacts
 
 on:
+  # 06:00 IST daily == 00:30 UTC
   schedule:
-    - cron: "30 21 * * *"   # 9:30 PM UTC = 3:00 AM IST (next day)
-  timezone: "Asia/Kolkata"
+    - cron: "30 21 * * *"
   workflow_dispatch: {}
 
 concurrency:
