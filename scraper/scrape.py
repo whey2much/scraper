@@ -4,9 +4,17 @@ import pandas as pd
 import re
 import os
 import sys
+import requests as http_requests
 from dataclasses import dataclass
 from time import sleep
 from typing import Optional, List, Dict, Tuple
+from urllib.parse import urlparse, urlunparse
+
+try:
+    import undetected_chromedriver as uc
+    UC_AVAILABLE = True
+except ImportError:
+    UC_AVAILABLE = False
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -34,6 +42,22 @@ WAIT_TIMEOUT = 25
 MAX_RETRIES = 4
 VARIANT_WAIT_AFTER_CLICK = 1
 
+# Price sanity bounds — reject anything outside this range
+MIN_VALID_PRICE = 50.0
+MAX_VALID_PRICE = 150000.0
+
+# Sites that use Shopify — we call their JSON API instead of Selenium
+# Maps site_name → domain to match against product URL
+SHOPIFY_SITES = {
+    "OptimumNutrition": "optimumnutrition.co.in",
+}
+
+# Text fragments that indicate out-of-stock on a page
+OUT_OF_STOCK_TEXTS = [
+    "out of stock", "notify me when available", "sold out",
+    "currently unavailable", "not available", "out-of-stock",
+]
+
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(LOCATORS_DIR, exist_ok=True)
 os.makedirs(DEBUG_DIR, exist_ok=True)
@@ -54,7 +78,7 @@ def slugify(s: str) -> str:
 def normalize_price_text(txt: str) -> str:
     if not txt:
         return ""
-    txt = txt.replace("\u00A0", " ").replace("\u202F", " ").replace("\u2009", " ")
+    txt = txt.replace(" ", " ").replace(" ", " ").replace(" ", " ")
     txt = re.sub(r"[^\d,.\s]", "", txt)
     txt = re.sub(r"\s+", "", txt)
     return txt
@@ -79,7 +103,11 @@ def parse_price(txt: str) -> Optional[float]:
                 t = t.replace(",", "")
 
     try:
-        return float(t)
+        p = float(t)
+        # Reject implausible prices
+        if p < MIN_VALID_PRICE or p > MAX_VALID_PRICE:
+            return None
+        return p
     except ValueError:
         return None
 
@@ -155,9 +183,64 @@ def get_price_from_pagesource(driver) -> Tuple[Optional[float], Optional[str]]:
     if m:
         num = m.group(1)
         p = parse_price(num)
-        if p and p > 100:
+        if p and p > MIN_VALID_PRICE:
             return p, f"₹{num}"
     return None, None
+
+def is_page_out_of_stock(driver) -> bool:
+    """Detect common out-of-stock signals on the page."""
+    try:
+        body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
+        return any(indicator in body_text for indicator in OUT_OF_STOCK_TEXTS)
+    except Exception:
+        return False
+
+# ---- Shopify JSON API scraper ---- #
+
+def scrape_shopify(product_url: str) -> Tuple[Optional[float], Optional[str], Optional[float], bool]:
+    """
+    Calls Shopify's public /products/{handle}.json endpoint.
+    Returns (price, raw_text, original_price, in_stock).
+    Zero Selenium needed — never breaks from CSS changes.
+    """
+    try:
+        parsed = urlparse(product_url)
+        path = parsed.path.rstrip("/")
+
+        if "/products/" not in path:
+            return None, None, None, True
+
+        # Strip query params, append .json
+        json_url = urlunparse((parsed.scheme, parsed.netloc, path + ".json", "", "", ""))
+
+        resp = http_requests.get(json_url, timeout=15, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        })
+        resp.raise_for_status()
+        data = resp.json()
+
+        variants = data.get("product", {}).get("variants", [])
+        if not variants:
+            return None, None, None, True
+
+        # Prefer first available variant; fall back to first variant
+        variant = next((v for v in variants if v.get("available")), variants[0])
+
+        price = parse_price(str(variant.get("price", "")))
+        in_stock = bool(variant.get("available", False))
+
+        compare_at = variant.get("compare_at_price")
+        original_price = parse_price(str(compare_at)) if compare_at else None
+        # Only keep original_price if it's actually higher than selling price
+        if original_price and price and original_price <= price:
+            original_price = None
+
+        raw = f"₹{variant.get('price', '')}"
+        return price, raw, original_price, in_stock
+
+    except Exception as e:
+        print(f"    [WARN] Shopify API failed for {product_url[:60]}: {e}")
+        return None, None, None, True
 
 # ---- Variant selection ---- #
 
@@ -254,10 +337,10 @@ class WebsiteScraper:
         return None, None
 
 # ------------------------------- #
-# Driver & schema
+# Driver
 # ------------------------------- #
 
-def build_driver() -> webdriver.Chrome:
+def _get_selenium_options() -> Options:
     options = Options()
     options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
@@ -274,8 +357,33 @@ def build_driver() -> webdriver.Chrome:
     )
     options.page_load_strategy = "eager"
     options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+    return options
 
+def build_driver() -> webdriver.Chrome:
     chrome_bin = os.environ.get("CHROME_BIN")
+
+    # Try undetected_chromedriver first (better bot detection evasion)
+    if UC_AVAILABLE:
+        try:
+            uc_options = uc.ChromeOptions()
+            for arg in ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage",
+                        "--disable-gpu", "--log-level=3", "--window-size=1366,768"]:
+                uc_options.add_argument(arg)
+            uc_options.page_load_strategy = "eager"
+            uc_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+
+            kwargs = {"options": uc_options, "use_subprocess": True}
+            if chrome_bin:
+                kwargs["browser_executable_path"] = chrome_bin
+
+            driver = uc.Chrome(**kwargs)
+            driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
+            print("[INFO] Using undetected_chromedriver")
+            return driver
+        except Exception as e:
+            print(f"[WARN] undetected_chromedriver failed ({e}), falling back to selenium")
+
+    options = _get_selenium_options()
     if chrome_bin:
         options.binary_location = chrome_bin
 
@@ -318,18 +426,45 @@ def scrape_all():
                         "status": "no_url",
                         "currency": DEFAULT_CURRENCY,
                         "price_value": None,
+                        "original_price": None,
                         "price_display": "Information Unavailable",
                         "raw": "",
                         "link": ""
                     }
                     continue
 
+                # ---- Shopify API path (no Selenium needed) ----
+                shopify_domain = SHOPIFY_SITES.get(website_name)
+                if shopify_domain and shopify_domain in product_url:
+                    price_value, raw_text, original_price_value, in_stock = scrape_shopify(product_url)
+                    if price_value is not None:
+                        status = "ok" if in_stock else "out_of_stock"
+                        price_display = f"₹{price_value:.2f}"
+                    else:
+                        status = "price_not_found"
+                        price_display = "Price Not Available"
+                        original_price_value = None
+
+                    product_data[website_name] = {
+                        "status": status,
+                        "currency": DEFAULT_CURRENCY,
+                        "price_value": price_value,
+                        "original_price": original_price_value,
+                        "price_display": price_display,
+                        "raw": raw_text,
+                        "link": product_url,
+                    }
+                    print(f"    [SHOPIFY] {website_name}: {price_display} (in_stock={in_stock})")
+                    continue
+
+                # ---- Selenium path ----
                 locs = ensure_locators_schema(site_cfg)
                 scraper = WebsiteScraper(SiteLocator(website_name, locs))
 
                 status = "ok"
                 price_value: Optional[float] = None
                 raw_text: Optional[str] = None
+                in_stock = True
 
                 for attempt in range(1, MAX_RETRIES + 1):
                     try:
@@ -346,18 +481,28 @@ def scrape_all():
                             except Exception:
                                 pass
 
+                        # Try JSON-LD and meta first (more stable than CSS selectors)
                         p, raw = get_price_from_jsonld(driver)
                         if p is None:
                             p, raw = get_price_from_meta(driver)
+                        # Then CSS/XPath locators
                         if p is None:
                             p2, raw2 = scraper.get_price(driver, timeout=WAIT_TIMEOUT)
                             p, raw = (p2, raw2) if p2 is not None else (None, raw)
+                        # Last resort: page source regex
                         if p is None:
                             p3, raw3 = get_price_from_pagesource(driver)
                             p, raw = (p3, raw3) if p3 is not None else (None, raw)
 
                         price_value, raw_text = p, raw
+
+                        # Check for out-of-stock signals
+                        if price_value is not None:
+                            in_stock = not is_page_out_of_stock(driver)
+
                         status = "ok" if price_value is not None else "price_not_found"
+                        if price_value is not None and not in_stock:
+                            status = "out_of_stock"
                         break
 
                     except Exception as e:
@@ -378,6 +523,7 @@ def scrape_all():
                     "status": status,
                     "currency": DEFAULT_CURRENCY,
                     "price_value": price_value,
+                    "original_price": None,
                     "price_display": price_display,
                     "raw": raw_text,
                     "link": product_url
@@ -407,6 +553,7 @@ def scrape_all():
                 "Status": info.get("status"),
                 "Currency": info.get("currency"),
                 "Price": info.get("price_value"),
+                "OriginalPrice": info.get("original_price"),
                 "Link": info.get("link"),
                 "Raw": info.get("raw"),
             })
