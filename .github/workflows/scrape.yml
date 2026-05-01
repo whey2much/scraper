@@ -1,7 +1,7 @@
-name: Scrape (Selenium) and Save Artifacts
+name: Scrape and Push to Whey2Much
 
 on:
-  # 06:00 IST daily == 00:30 UTC
+  # 06:30 IST daily == 01:00 UTC
   schedule:
     - cron: "30 21 * * *"
   workflow_dispatch: {}
@@ -25,7 +25,7 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - name: Install Google Chrome (pin major to avoid driver flaps)
+      - name: Install Google Chrome
         id: chrome
         uses: browser-actions/setup-chrome@v1
         with:
@@ -57,29 +57,24 @@ jobs:
           PYTHONUNBUFFERED: "1"
         run: |
           python -u scraper/scrape.py
-          echo "Run complete"
+          echo "Scrape complete"
 
-      - name: Push prices to Wix (Products)
+      - name: Push prices to Whey2Much
         if: ${{ success() && hashFiles('data/scraped_data.json') != '' }}
         env:
-          WEBHOOK_URL: ${{ secrets.WIX_PRODUCTS_WEBHOOK_URL }}
-          WEBHOOK_TOKEN: ${{ secrets.WIX_PRODUCTS_TOKEN }}
+          WHEY2MUCH_API_URL: ${{ secrets.WHEY2MUCH_API_URL }}
+          WHEY2MUCH_API_KEY: ${{ secrets.WHEY2MUCH_API_KEY }}
+          PYTHONUNBUFFERED: "1"
         run: |
-          set -euo pipefail
-          if [ -z "${WEBHOOK_URL:-}" ] || [ -z "${WEBHOOK_TOKEN:-}" ]; then
-            echo "❌ Missing secrets. Set WIX_PRODUCTS_WEBHOOK_URL and WIX_PRODUCTS_TOKEN in repo Secrets." >&2
+          if [ -z "${WHEY2MUCH_API_URL:-}" ] || [ -z "${WHEY2MUCH_API_KEY:-}" ]; then
+            echo "❌ Missing secrets. Set WHEY2MUCH_API_URL and WHEY2MUCH_API_KEY in repo Secrets." >&2
             exit 1
           fi
           if [ ! -s data/scraped_data.json ]; then
             echo "❌ data/scraped_data.json not found or empty." >&2
             exit 1
           fi
-          echo "Posting scraped_data.json to Wix..."
-          curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -H "x-api-key: $WEBHOOK_TOKEN" \
-            --data-binary @data/scraped_data.json
-          echo "✅ Posted to Wix."
+          python -u scraper/push_to_whey2much.py
 
       - name: Upload results (artifacts)
         if: always()
