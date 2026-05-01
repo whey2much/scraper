@@ -1,50 +1,118 @@
 {
   "Amazon": {
     "locators": [
-      { "locator_type": "css", "locator_value": "#corePriceDisplay_desktop_feature_div .a-offscreen" },
-      { "locator_type": "css", "locator_value": "#apex_desktop .a-offscreen" },
-      { "locator_type": "css", "locator_value": "span.a-price-whole" }
+      {
+        "locator_type": "css",
+        "locator_value": "#corePriceDisplay_desktop_feature_div .a-offscreen"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "#apex_desktop .a-offscreen"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "span.a-price-whole"
+      }
     ]
   },
   "Healthkart": {
     "locators": [
-      { "locator_type": "css", "locator_value": ".price .value" },
-      { "locator_type": "css", "locator_value": ".final-price, .finalPrice" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+      {
+        "locator_type": "css",
+        "locator_value": ".price .value"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": ".final-price, .finalPrice"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//*[contains(text(),'\u20b9')][1]"
+      }
     ]
   },
   "MuscleBlaze": {
-  "locators": [
-    { "locator_type": "css", "locator_value": "div.offer-price span" },
-    { "locator_type": "css", "locator_value": "[class*='offer-price'] span" },
-    { "locator_type": "xpath", "locator_value": "//div[contains(@class,'offer-price')]//span" }
-  ]
+    "locators": [
+      {
+        "locator_type": "css",
+        "locator_value": "div.offer-price span"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "[class*='offer-price'] span"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//div[contains(@class,'offer-price')]//span"
+      }
+    ]
   },
   "OptimumNutrition": {
-  "locators": [
-    { "locator_type": "css", "locator_value": "span.price-item--sale.price-item--last" },
-    { "locator_type": "css", "locator_value": ".selling-price-div .price-item" },
-    { "locator_type": "xpath", "locator_value": "//span[contains(@class,'price-item--last')]" }
-  ]
+    "locators": [
+      {
+        "locator_type": "css",
+        "locator_value": "span.price-item--sale.price-item--last"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": ".selling-price-div .price-item"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//span[contains(@class,'price-item--last')]"
+      }
+    ]
   },
   "MyProtein": {
     "locators": [
-      { "locator_type": "css", "locator_value": ".product-price, .productPrice_value, .price" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+      {
+        "locator_type": "css",
+        "locator_value": ".product-price, .productPrice_value, .price"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//*[contains(text(),'\u20b9')][1]"
+      }
     ]
   },
   "Nutrabay": {
     "locators": [
-      { "locator_type": "css", "locator_value": "[itemprop='price'], .sale-price, .offer-price, .product-offer-price, .price .value" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(text(),'₹')][1]" }
+      {
+        "locator_type": "css",
+        "locator_value": "[itemprop='price'], .sale-price, .offer-price, .product-offer-price, .price .value"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//*[contains(text(),'\u20b9')][1]"
+      }
     ]
   },
   "Tata1mg": {
     "locators": [
-      { "locator_type": "css", "locator_value": "div[class*='PriceDetails_discount-div']" },
-      { "locator_type": "css", "locator_value": "div[class*='OtcPriceBox_price-box'] div[class*='PriceDetails_discount-div']" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(@class,'PriceDetails_discount-div')]" },
-      { "locator_type": "xpath", "locator_value": "//*[contains(@class,'OtcPriceBox_price-box')]//*[contains(@class,'PriceDetails_discount-div')]" }
+      {
+        "locator_type": "css",
+        "locator_value": "div[class*='PriceDetails_discount-div']"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "div[class*='OtcPriceBox_price-box'] div[class*='PriceDetails']"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "div[class*='PriceDetails']"
+      },
+      {
+        "locator_type": "css",
+        "locator_value": "meta[itemprop='price']"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//*[contains(@class,'PriceDetails')]"
+      },
+      {
+        "locator_type": "xpath",
+        "locator_value": "//h1/following::*[contains(normalize-space(),'\u20b9')][1]"
+      }
     ]
   }
 }
