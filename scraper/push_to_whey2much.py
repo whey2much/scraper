@@ -23,6 +23,8 @@ SCRAPED_DATA_PATH   = os.path.join(DATA_DIR, "scraped_data.json")
 PRODUCTS_PATH       = os.path.join(DATA_DIR, "products.json")
 METADATA_PATH       = os.path.join(DATA_DIR, "product_metadata.json")
 
+BATCH_SIZE = 30  # Push in chunks to avoid timeouts
+
 
 def load_json(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -30,14 +32,6 @@ def load_json(path: str) -> dict:
 
 
 def build_payload(scraped: dict, products: dict, metadata: dict) -> list:
-    """
-    Transform scraper output into the Whey2Much ingest API payload format.
-
-    Skips items where:
-      - status is "no_url"         (product has no URL for that site)
-      - status starts with "error:" (scraping failed; don't overwrite good data)
-      - price_value is None        (no price could be found)
-    """
     now_iso = datetime.now(timezone.utc).isoformat()
     payload = []
 
@@ -61,15 +55,10 @@ def build_payload(scraped: dict, products: dict, metadata: dict) -> list:
             currency    = info.get("currency", "INR")
             scraped_url = info.get("link", "")
 
-            # Skip — no URL configured for this site
             if status == "no_url":
                 continue
-
-            # Skip — scraping error (network/timeout); don't overwrite good data
             if status.startswith("error:"):
                 continue
-
-            # Skip — no valid price found
             if price_value is None:
                 continue
 
@@ -79,10 +68,7 @@ def build_payload(scraped: dict, products: dict, metadata: dict) -> list:
             if not product_url and not affiliate_url:
                 continue
 
-            # out_of_stock status still gets pushed so we can mark it correctly
             in_stock = (status == "ok")
-
-            # Pass through original_price (MRP) if the scraper captured it
             original_price = info.get("original_price")
 
             payload.append({
@@ -105,8 +91,8 @@ def build_payload(scraped: dict, products: dict, metadata: dict) -> list:
     return payload
 
 
-def push(payload: list, api_url: str, api_key: str) -> dict:
-    body = json.dumps(payload).encode("utf-8")
+def push_batch(batch: list, api_url: str, api_key: str) -> dict:
+    body = json.dumps(batch).encode("utf-8")
     req  = Request(
         f"{api_url.rstrip('/')}/api/ingest/prices",
         data=body,
@@ -117,7 +103,7 @@ def push(payload: list, api_url: str, api_key: str) -> dict:
         method="POST",
     )
     try:
-        with urlopen(req, timeout=120) as resp:
+        with urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except HTTPError as e:
         body_text = e.read().decode("utf-8", errors="replace")
@@ -148,21 +134,36 @@ def main():
         print("No valid price entries to push. Check scraped_data.json.")
         sys.exit(0)
 
-    print(f"Pushing {len(payload)} price entries to {api_url} ...")
+    total     = len(payload)
+    batches   = [payload[i:i + BATCH_SIZE] for i in range(0, total, BATCH_SIZE)]
+    print(f"Pushing {total} price entries in {len(batches)} batches of {BATCH_SIZE} to {api_url} ...")
 
-    try:
-        result = push(payload, api_url, api_key)
-    except RuntimeError as e:
-        print(f"Push failed: {e}", file=sys.stderr)
-        sys.exit(1)
+    successful = 0
+    failed     = 0
+    all_errors = []
 
-    print(f"Done. total={result.get('total')} successful={result.get('successful')} failed={result.get('failed')}")
-    if result.get("errors"):
+    for i, batch in enumerate(batches, 1):
+        print(f"  Batch {i}/{len(batches)} ({len(batch)} entries)...", end=" ", flush=True)
+        try:
+            result = push_batch(batch, api_url, api_key)
+            batch_ok  = result.get("successful", 0)
+            batch_fail = result.get("failed", 0)
+            successful += batch_ok
+            failed     += batch_fail
+            print(f"ok={batch_ok} fail={batch_fail}")
+            if result.get("errors"):
+                all_errors.extend(result["errors"])
+        except RuntimeError as e:
+            print(f"FAILED — {e}")
+            failed += len(batch)
+
+    print(f"\nDone. total={total} successful={successful} failed={failed}")
+    if all_errors:
         print("Errors:")
-        for err in result["errors"]:
+        for err in all_errors:
             print(f"   - {err}")
 
-    if result.get("failed", 0) > 0:
+    if failed > 0:
         sys.exit(1)
 
 
