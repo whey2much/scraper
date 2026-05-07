@@ -39,8 +39,10 @@ DEBUG_DIR = os.path.join(DATA_DIR, "debug")
 DEFAULT_CURRENCY = "INR"
 PAGE_LOAD_TIMEOUT = 40
 WAIT_TIMEOUT = 25
+PER_LOCATOR_TIMEOUT = 4   # short wait per individual locator after the page has settled
 MAX_RETRIES = 4
 VARIANT_WAIT_AFTER_CLICK = 1
+JS_SETTLE_AFTER_LOAD = 1.5  # seconds to let JS hydrate the right variant before scraping
 
 # Price sanity bounds — reject anything outside this range
 MIN_VALID_PRICE = 50.0
@@ -55,7 +57,7 @@ SHOPIFY_SITES = {
 # Text fragments that indicate out-of-stock on a page
 OUT_OF_STOCK_TEXTS = [
     "out of stock", "notify me when available", "sold out",
-    "currently unavailable", "not available", "out-of-stock",
+    "currently unavailable", "out-of-stock",
 ]
 
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -188,12 +190,41 @@ def get_price_from_pagesource(driver) -> Tuple[Optional[float], Optional[str]]:
     return None, None
 
 def is_page_out_of_stock(driver) -> bool:
-    """Detect common out-of-stock signals on the page."""
+    """Detect out-of-stock signals — restricted to the product container, not the whole body,
+    so we don't trip on related-product carousels or footer 'back-in-stock alerts'."""
+    selectors = [
+        "[class*='product-detail']",
+        "[class*='ProductDetail']",
+        "[class*='product-page']",
+        "[class*='ProductPage']",
+        "[id*='product-info']",
+        "[data-product]",
+        "main",
+    ]
+    for sel in selectors:
+        try:
+            elem = driver.find_element(By.CSS_SELECTOR, sel)
+            text = (elem.text or "").lower()
+            if not text:
+                continue
+            return any(indicator in text for indicator in OUT_OF_STOCK_TEXTS)
+        except Exception:
+            continue
+    # Fall back to body if no product container found, but only check the first 4kb
     try:
-        body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
+        body_text = (driver.find_element(By.TAG_NAME, "body").text or "")[:4000].lower()
         return any(indicator in body_text for indicator in OUT_OF_STOCK_TEXTS)
     except Exception:
         return False
+
+def get_page_h1(driver) -> str:
+    """First h1 on the page — used as an audit-log sanity check
+    so we can see what page we actually scraped."""
+    try:
+        h1 = driver.find_element(By.TAG_NAME, "h1")
+        return (h1.text or h1.get_attribute("innerText") or "").strip()[:200]
+    except Exception:
+        return ""
 
 # ---- Shopify JSON API scraper ---- #
 
@@ -305,36 +336,51 @@ class WebsiteScraper:
             txt = elem.get_attribute("textContent") or elem.get_attribute("innerText") or ""
         return txt.strip()
 
-    def get_price(self, driver, timeout=WAIT_TIMEOUT) -> Tuple[Optional[float], Optional[str]]:
-        wait = WebDriverWait(driver, timeout)
-        for loc in self.site.locators:
+    def get_price(self, driver) -> Tuple[Optional[float], Optional[str], Optional[str]]:
+        """
+        Tries CSS/XPath locators FIRST, then JSON-LD/meta as fallback.
+        Returns (price, raw_text, method) — `method` identifies which strategy
+        produced the price (e.g. "css_0", "json_ld") for the audit log.
+
+        Why CSS-first? JSON-LD on most retailers (Nutrabay, Healthkart, Tata1mg)
+        contains the *default* variant's price — not the variant your URL params
+        select. CSS selectors target the visibly rendered price, which the
+        client-side JS has already updated to the chosen variant.
+        """
+        for i, loc in enumerate(self.site.locators):
             by = LOCATOR_MAP.get((loc.get("locator_type") or "").lower())
             val = loc.get("locator_value") or ""
             if not (by and val):
                 continue
             try:
+                wait = WebDriverWait(driver, PER_LOCATOR_TIMEOUT)
                 elem = wait.until(
                     EC.visibility_of_element_located((by, val))
                     if self.site.wait_visible
                     else EC.presence_of_element_located((by, val))
                 )
-                raw = self._get_element_text(elem)
+                # For meta tags we need the content attribute, not the text
+                if val.startswith("meta") or "meta[" in val:
+                    raw = elem.get_attribute("content") or self._get_element_text(elem)
+                else:
+                    raw = self._get_element_text(elem)
                 price = parse_price(raw)
                 if price is not None:
-                    return price, raw
+                    return price, raw, f"css_{i}"
             except Exception:
                 continue
 
+        # Fallbacks — JSON-LD/meta/regex. Used only when CSS chain is exhausted.
         p, raw = get_price_from_jsonld(driver)
         if p is not None:
-            return p, raw
+            return p, raw, "json_ld"
         p, raw = get_price_from_meta(driver)
         if p is not None:
-            return p, raw
+            return p, raw, "meta"
         p, raw = get_price_from_pagesource(driver)
         if p is not None:
-            return p, raw
-        return None, None
+            return p, raw, "page_source"
+        return None, None, None
 
 # ------------------------------- #
 # Driver
@@ -355,7 +401,9 @@ def _get_selenium_options() -> Options:
         "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
     )
-    options.page_load_strategy = "eager"
+    # Use 'normal' so JS-rendered variant prices have a chance to hydrate
+    # before we start scraping. 'eager' was returning unselected-variant prices.
+    options.page_load_strategy = "normal"
     options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
     return options
 
@@ -369,7 +417,7 @@ def build_driver() -> webdriver.Chrome:
             for arg in ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage",
                         "--disable-gpu", "--log-level=3", "--window-size=1366,768"]:
                 uc_options.add_argument(arg)
-            uc_options.page_load_strategy = "eager"
+            uc_options.page_load_strategy = "normal"
             uc_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
 
             kwargs = {"options": uc_options, "use_subprocess": True}
@@ -429,7 +477,11 @@ def scrape_all():
                         "original_price": None,
                         "price_display": "Information Unavailable",
                         "raw": "",
-                        "link": ""
+                        "link": "",
+                        "final_url": "",
+                        "method": None,
+                        "page_h1": "",
+                        "json_ld_price": None,
                     }
                     continue
 
@@ -453,6 +505,10 @@ def scrape_all():
                         "price_display": price_display,
                         "raw": raw_text,
                         "link": product_url,
+                        "final_url": product_url,
+                        "method": "shopify_api",
+                        "page_h1": "",
+                        "json_ld_price": None,
                     }
                     print(f"    [SHOPIFY] {website_name}: {price_display} (in_stock={in_stock})")
                     continue
@@ -465,36 +521,55 @@ def scrape_all():
                 price_value: Optional[float] = None
                 raw_text: Optional[str] = None
                 in_stock = True
+                method: Optional[str] = None
+                final_url = ""
+                page_h1 = ""
+                json_ld_price: Optional[float] = None
 
                 for attempt in range(1, MAX_RETRIES + 1):
                     try:
                         driver.get(product_url)
 
+                        # Wait for body, then for any ₹ to appear, then settle.
+                        # This applies to ALL sites now (previously only Flipkart/MuscleBlaze)
+                        # so dynamic variant prices have time to hydrate.
+                        WebDriverWait(driver, 15).until(
+                            EC.presence_of_element_located((By.TAG_NAME, "body"))
+                        )
+
                         if website_name in ("Flipkart", "MuscleBlaze"):
-                            WebDriverWait(driver, 10).until(
-                                EC.presence_of_element_located((By.TAG_NAME, "body"))
-                            )
                             needles = extract_variant_needles(product_name)
                             click_variant_if_found(driver, *needles)
-                            try:
-                                WebDriverWait(driver, 8).until(lambda d: "₹" in (d.page_source or ""))
-                            except Exception:
-                                pass
 
-                        # Try JSON-LD and meta first (more stable than CSS selectors)
-                        p, raw = get_price_from_jsonld(driver)
-                        if p is None:
-                            p, raw = get_price_from_meta(driver)
-                        # Then CSS/XPath locators
-                        if p is None:
-                            p2, raw2 = scraper.get_price(driver, timeout=WAIT_TIMEOUT)
-                            p, raw = (p2, raw2) if p2 is not None else (None, raw)
-                        # Last resort: page source regex
-                        if p is None:
-                            p3, raw3 = get_price_from_pagesource(driver)
-                            p, raw = (p3, raw3) if p3 is not None else (None, raw)
+                        try:
+                            WebDriverWait(driver, 8).until(
+                                lambda d: "₹" in (d.page_source or "")
+                            )
+                        except Exception:
+                            pass
 
-                        price_value, raw_text = p, raw
+                        # Let JS finish hydrating the selected variant before scraping
+                        sleep(JS_SETTLE_AFTER_LOAD)
+
+                        # CSS/XPath locators FIRST, then JSON-LD/meta as fallback
+                        p, raw, m = scraper.get_price(driver)
+
+                        # Audit: capture what JSON-LD said even if we used a CSS hit,
+                        # so we can spot variant mismatches in scraped_data.json
+                        try:
+                            jp, _ = get_price_from_jsonld(driver)
+                            json_ld_price = jp
+                        except Exception:
+                            json_ld_price = None
+
+                        # Capture audit metadata (final URL after redirects, page h1)
+                        try:
+                            final_url = driver.current_url or product_url
+                        except Exception:
+                            final_url = product_url
+                        page_h1 = get_page_h1(driver)
+
+                        price_value, raw_text, method = p, raw, m
 
                         # Check for out-of-stock signals
                         if price_value is not None:
@@ -526,7 +601,11 @@ def scrape_all():
                     "original_price": None,
                     "price_display": price_display,
                     "raw": raw_text,
-                    "link": product_url
+                    "link": product_url,
+                    "final_url": final_url,
+                    "method": method,
+                    "page_h1": page_h1,
+                    "json_ld_price": json_ld_price,
                 }
 
             results[product_key] = {
@@ -554,6 +633,10 @@ def scrape_all():
                 "Currency": info.get("currency"),
                 "Price": info.get("price_value"),
                 "OriginalPrice": info.get("original_price"),
+                "Method": info.get("method"),
+                "JsonLdPrice": info.get("json_ld_price"),
+                "FinalURL": info.get("final_url"),
+                "PageH1": info.get("page_h1"),
                 "Link": info.get("link"),
                 "Raw": info.get("raw"),
             })
